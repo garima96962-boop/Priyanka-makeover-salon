@@ -1,0 +1,282 @@
+
+Action: file_editor create /app/frontend/app/(tabs)/index.tsx --file-text "import React from 'react';
+import { View, Text, StyleSheet, ScrollView, Pressable, Linking, Dimensions } from 'react-native';
+import { Image } from 'expo-image';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Feather } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { colors, spacing, radius, shadow, fonts, CONTACT } from '@/src/theme';
+import { SERVICES, TESTIMONIALS, WHY_CHOOSE, OFFERS, BLOG } from '@/src/data';
+
+const { width: W } = Dimensions.get('window');
+
+const HERO = 'https://images.pexels.com/photos/33466159/pexels-photo-33466159.jpeg?auto=compress&w=1200';
+const BRIDAL_HERO = 'https://images.unsplash.com/photo-1684868265715-03e19a3e0e00?w=1200&auto=format&fit=crop';
+
+export default function Home() {
+  const router = useRouter();
+
+  const openWhatsApp = () => {
+    Linking.openURL(`https://wa.me/${CONTACT.whatsapp}?text=Hi%20Priyakamakeover,%20I'd%20like%20to%20book%20an%20appointment.`);
+  };
+
+  const featured = SERVICES.filter((s) => ['bridal', 'party', 'facial', 'spa', 'color'].includes(s.id));
+
+  return (
+    <View style={{ flex: 1, backgroundColor: colors.surface }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 120 }} showsVerticalScrollIndicator={false}>
+        {/* HERO */}
+        <View style={styles.hero}>
+          <Image source={HERO} style={StyleSheet.absoluteFillObject} contentFit=\"cover\" transition={300} />
+          <LinearGradient
+            colors={['rgba(31,31,31,0.15)', 'rgba(31,31,31,0.45)', 'rgba(31,31,31,0.85)']}
+            style={StyleSheet.absoluteFillObject}
+          />
+          <SafeAreaView edges={['top']} style={styles.heroInner}>
+            {/* Top bar */}
+            <View style={styles.topbar}>
+              <View style={styles.logoWrap}>
+                <Text style={styles.logoInitials}>P&S</Text>
+              </View>
+              <Pressable onPress={() => router.push('/admin/login')} testID=\"admin-entry\" hitSlop={12}>
+                <Feather name=\"user\" size={20} color={colors.pearl} />
+              </Pressable>
+            </View>
+
+            <View style={{ flex: 1 }} />
+
+            <Text style={styles.heroEyebrow}>PRIYAKAMAKEOVER & SALON</Text>
+            <Text style={styles.heroTitle}>Enhancing Your{\"\n\"}Beauty with Style{\"\n\"}& Elegance</Text>
+            <Text style={styles.heroSub}>Luxury bridal, party & beauty studio · Pipiganj</Text>
+            <View style={styles.heroCtaRow}>
+              <Pressable style={styles.btnPrimary} onPress={() => router.push('/(tabs)/book')} testID=\"hero-book-btn\">
+                <Text style={styles.btnPrimaryText}>Book Appointment</Text>
+              </Pressable>
+              <Pressable style={styles.btnGhost} onPress={() => router.push('/(tabs)/services')} testID=\"hero-services-btn\">
+                <Text style={styles.btnGhostText}>Explore Services</Text>
+                <Feather name=\"arrow-right\" size={16} color={colors.pearl} />
+              </Pressable>
+            </View>
+          </SafeAreaView>
+        </View>
+
+        {/* Featured Services */}
+        <SectionHeader eyebrow=\"Signature\" title=\"Featured Services\" onSeeAll={() => router.push('/(tabs)/services')} />
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.hRow} testID=\"featured-scroll\">
+          {featured.map((s) => (
+            <Pressable key={s.id} style={styles.featureCard} onPress={() => router.push('/(tabs)/services')} testID={`featured-${s.id}`}>
+              <Image source={s.image} style={styles.featureImg} contentFit=\"cover\" />
+              <LinearGradient colors={['transparent', 'rgba(31,31,31,0.75)']} style={styles.featureScrim} />
+              <View style={styles.featureBody}>
+                <Text style={styles.featureTitle}>{s.name}</Text>
+                <Text style={styles.featureMeta}>{s.price} · {s.duration}</Text>
+              </View>
+            </Pressable>
+          ))}
+        </ScrollView>
+
+        {/* Why Choose Us */}
+        <SectionHeader eyebrow=\"Why Us\" title=\"Why Choose Priyakamakeover\" />
+        <View style={styles.whyGrid}>
+          {WHY_CHOOSE.map((w) => (
+            <View key={w.title} style={styles.whyCard}>
+              <View style={styles.whyIconWrap}>
+                <Feather name={w.icon as any} size={20} color={colors.charcoal} />
+              </View>
+              <Text style={styles.whyTitle}>{w.title}</Text>
+              <Text style={styles.whyDesc}>{w.desc}</Text>
+            </View>
+          ))}
+        </View>
+
+        {/* Signature Bridal */}
+        <SectionHeader eyebrow=\"Bridal\" title=\"Signature Bridal Makeup\" />
+        <Pressable style={styles.bridalCard} onPress={() => router.push('/bridal')} testID=\"bridal-card\">
+          <Image source={BRIDAL_HERO} style={StyleSheet.absoluteFillObject} contentFit=\"cover\" />
+          <LinearGradient colors={['rgba(31,31,31,0.15)', 'rgba(31,31,31,0.75)']} style={StyleSheet.absoluteFillObject} />
+          <View style={styles.bridalBody}>
+            <Text style={styles.bridalTitle}>Made for the{'\n'}Bride of Today</Text>
+            <Text style={styles.bridalSub}>Editorial HD looks · Long-wear finish · Custom draping</Text>
+            <View style={styles.bridalPill}>
+              <Text style={styles.bridalPillText}>View Bridal Portfolio</Text>
+              <Feather name=\"arrow-right\" size={14} color={colors.charcoal} />
+            </View>
+          </View>
+        </Pressable>
+
+        {/* Offers */}
+        <SectionHeader eyebrow=\"Limited Time\" title=\"Special Offers\" onSeeAll={() => router.push('/offers')} />
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.hRow}>
+          {OFFERS.map((o) => (
+            <View key={o.id} style={[styles.offerCard, { backgroundColor: o.color }]}>
+              <Text style={styles.offerBadge}>{o.discount}</Text>
+              <Text style={styles.offerTitle}>{o.title}</Text>
+              <Text style={styles.offerDesc}>{o.desc}</Text>
+            </View>
+          ))}
+        </ScrollView>
+
+        {/* Testimonials */}
+        <SectionHeader eyebrow=\"Love Notes\" title=\"What Clients Say\" onSeeAll={() => router.push('/testimonials')} />
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.hRow}>
+          {TESTIMONIALS.map((t) => (
+            <View key={t.id} style={styles.testCard}>
+              <View style={styles.testStars}>
+                {Array.from({ length: t.rating }).map((_, i) => (
+                  <Feather key={i} name=\"star\" size={14} color={colors.brandStrong} />
+                ))}
+              </View>
+              <Text style={styles.testQuote} numberOfLines={5}>&ldquo;{t.quote}&rdquo;</Text>
+              <View style={styles.testMeta}>
+                <Image source={t.avatar} style={styles.testAvatar} />
+                <View>
+                  <Text style={styles.testName}>{t.name}</Text>
+                  <Text style={styles.testRole}>{t.role}</Text>
+                </View>
+              </View>
+            </View>
+          ))}
+        </ScrollView>
+
+        {/* Blog Preview */}
+        <SectionHeader eyebrow=\"Journal\" title=\"Beauty Tips & Trends\" onSeeAll={() => router.push('/blog')} />
+        <View style={{ paddingHorizontal: spacing.xl, gap: spacing.md }}>
+          {BLOG.slice(0, 2).map((b) => (
+            <Pressable key={b.id} style={styles.blogCard} onPress={() => router.push(`/blog/${b.id}`)} testID={`blog-${b.id}`}>
+              <Image source={b.cover} style={styles.blogImg} contentFit=\"cover\" />
+              <View style={{ flex: 1, padding: spacing.md }}>
+                <Text style={styles.blogCat}>{b.category.toUpperCase()} · {b.date}</Text>
+                <Text style={styles.blogTitle} numberOfLines={2}>{b.title}</Text>
+                <Text style={styles.blogExcerpt} numberOfLines={2}>{b.excerpt}</Text>
+              </View>
+            </Pressable>
+          ))}
+        </View>
+
+        {/* Quick Links */}
+        <SectionHeader eyebrow=\"Discover\" title=\"More\" />
+        <View style={styles.quickGrid}>
+          <QuickLink icon=\"info\" label=\"Our Story\" onPress={() => router.push('/about')} tid=\"quick-about\" />
+          <QuickLink icon=\"help-circle\" label=\"FAQ\" onPress={() => router.push('/faq')} tid=\"quick-faq\" />
+          <QuickLink icon=\"instagram\" label=\"Instagram\" onPress={() => Linking.openURL(CONTACT.instagramUrl)} tid=\"quick-ig\" />
+          <QuickLink icon=\"gift\" label=\"Offers\" onPress={() => router.push('/offers')} tid=\"quick-offers\" />
+        </View>
+
+        {/* Final CTA */}
+        <View style={styles.finalCta}>
+          <Text style={styles.finalTitle}>Ready to feel radiant?</Text>
+          <Text style={styles.finalSub}>Book your appointment today and let us pamper you.</Text>
+          <Pressable style={styles.btnPrimaryDark} onPress={() => router.push('/(tabs)/book')} testID=\"final-book-btn\">
+            <Text style={styles.btnPrimaryDarkText}>Book Appointment</Text>
+          </Pressable>
+        </View>
+      </ScrollView>
+
+      {/* Floating WhatsApp */}
+      <Pressable onPress={openWhatsApp} style={styles.fab} testID=\"fab-whatsapp\">
+        <Feather name=\"message-circle\" size={22} color={colors.charcoal} />
+      </Pressable>
+    </View>
+  );
+}
+
+function SectionHeader({ eyebrow, title, onSeeAll }: { eyebrow: string; title: string; onSeeAll?: () => void }) {
+  return (
+    <View style={styles.sectionHead}>
+      <View style={{ flex: 1 }}>
+        <Text style={styles.eyebrow}>{eyebrow.toUpperCase()}</Text>
+        <Text style={styles.sectionTitle}>{title}</Text>
+      </View>
+      {onSeeAll && (
+        <Pressable onPress={onSeeAll} hitSlop={8}>
+          <Text style={styles.seeAll}>See all</Text>
+        </Pressable>
+      )}
+    </View>
+  );
+}
+
+function QuickLink({ icon, label, onPress, tid }: { icon: any; label: string; onPress: () => void; tid: string }) {
+  return (
+    <Pressable style={styles.quickCard} onPress={onPress} testID={tid}>
+      <Feather name={icon} size={20} color={colors.charcoal} />
+      <Text style={styles.quickLabel}>{label}</Text>
+    </Pressable>
+  );
+}
+
+const styles = StyleSheet.create({
+  hero: { height: 620, position: 'relative', overflow: 'hidden' },
+  heroInner: { flex: 1, paddingHorizontal: spacing.xl, paddingBottom: spacing.xxl },
+  topbar: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingVertical: spacing.md },
+  logoWrap: { width: 44, height: 44, borderRadius: radius.pill, backgroundColor: 'rgba(252,251,249,0.15)', borderWidth: 1, borderColor: 'rgba(252,251,249,0.4)', alignItems: 'center', justifyContent: 'center' },
+  logoInitials: { fontFamily: fonts.serif, color: colors.pearl, fontSize: 14, fontWeight: '500' },
+  heroEyebrow: { color: colors.brand, letterSpacing: 3, fontSize: 11, fontFamily: fonts.sans, marginBottom: spacing.md },
+  heroTitle: { fontFamily: fonts.serif, color: colors.pearl, fontSize: 44, lineHeight: 50, fontWeight: '500' },
+  heroSub: { fontFamily: fonts.sans, color: 'rgba(252,251,249,0.85)', marginTop: spacing.md, fontSize: 14 },
+  heroCtaRow: { flexDirection: 'row', gap: spacing.md, marginTop: spacing.xl, flexWrap: 'wrap' },
+  btnPrimary: { backgroundColor: colors.brand, paddingVertical: 14, paddingHorizontal: spacing.xl, borderRadius: radius.pill },
+  btnPrimaryText: { color: colors.charcoal, fontFamily: fonts.sans, fontWeight: '500', fontSize: 14 },
+  btnGhost: { flexDirection: 'row', gap: 6, alignItems: 'center', paddingVertical: 14, paddingHorizontal: spacing.lg, borderRadius: radius.pill, borderWidth: 1, borderColor: 'rgba(252,251,249,0.4)' },
+  btnGhostText: { color: colors.pearl, fontFamily: fonts.sans, fontSize: 14 },
+
+  sectionHead: { flexDirection: 'row', alignItems: 'flex-end', paddingHorizontal: spacing.xl, marginTop: spacing.xxl, marginBottom: spacing.lg },
+  eyebrow: { color: colors.brandStrong, letterSpacing: 2, fontSize: 10, fontFamily: fonts.sans, marginBottom: 4 },
+  sectionTitle: { fontFamily: fonts.serif, fontSize: 26, color: colors.charcoal, fontWeight: '500' },
+  seeAll: { color: colors.charcoal, fontFamily: fonts.sans, fontSize: 13, textDecorationLine: 'underline' },
+
+  hRow: { paddingHorizontal: spacing.xl, gap: spacing.md, paddingRight: spacing.xxl },
+  featureCard: { width: W * 0.7, height: 280, borderRadius: radius.lg, overflow: 'hidden', backgroundColor: colors.beige, ...shadow.card },
+  featureImg: { ...StyleSheet.absoluteFillObject },
+  featureScrim: { position: 'absolute', bottom: 0, left: 0, right: 0, height: '55%' },
+  featureBody: { position: 'absolute', bottom: 0, left: 0, right: 0, padding: spacing.lg },
+  featureTitle: { fontFamily: fonts.serif, color: colors.pearl, fontSize: 20, fontWeight: '500' },
+  featureMeta: { fontFamily: fonts.sans, color: 'rgba(252,251,249,0.85)', fontSize: 12, marginTop: 4 },
+
+  whyGrid: { flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: spacing.xl, gap: spacing.md },
+  whyCard: { width: (W - spacing.xl * 2 - spacing.md) / 2, backgroundColor: colors.beige, borderRadius: radius.lg, padding: spacing.lg },
+  whyIconWrap: { width: 40, height: 40, borderRadius: radius.pill, backgroundColor: colors.pearl, alignItems: 'center', justifyContent: 'center', marginBottom: spacing.md },
+  whyTitle: { fontFamily: fonts.serif, fontSize: 16, color: colors.charcoal, fontWeight: '500' },
+  whyDesc: { fontFamily: fonts.sans, fontSize: 12, color: colors.muted, marginTop: 4, lineHeight: 18 },
+
+  bridalCard: { marginHorizontal: spacing.xl, height: 340, borderRadius: radius.lg, overflow: 'hidden', ...shadow.card },
+  bridalBody: { position: 'absolute', bottom: 0, left: 0, right: 0, padding: spacing.xl },
+  bridalTitle: { fontFamily: fonts.serif, fontSize: 32, color: colors.pearl, fontWeight: '500', lineHeight: 36 },
+  bridalSub: { fontFamily: fonts.sans, color: 'rgba(252,251,249,0.85)', fontSize: 13, marginTop: spacing.sm },
+  bridalPill: { alignSelf: 'flex-start', marginTop: spacing.lg, flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: colors.pearl, paddingVertical: 10, paddingHorizontal: spacing.lg, borderRadius: radius.pill },
+  bridalPillText: { fontFamily: fonts.sans, color: colors.charcoal, fontSize: 13, fontWeight: '500' },
+
+  offerCard: { width: W * 0.72, padding: spacing.xl, borderRadius: radius.lg, height: 180, justifyContent: 'space-between' },
+  offerBadge: { fontFamily: fonts.serif, fontSize: 28, color: colors.charcoal, fontWeight: '500' },
+  offerTitle: { fontFamily: fonts.serif, fontSize: 20, color: colors.charcoal, fontWeight: '500' },
+  offerDesc: { fontFamily: fonts.sans, fontSize: 12, color: colors.charcoal, opacity: 0.75, lineHeight: 18 },
+
+  testCard: { width: W * 0.78, padding: spacing.xl, borderRadius: radius.lg, backgroundColor: colors.pearl, borderWidth: 1, borderColor: colors.border, gap: spacing.md },
+  testStars: { flexDirection: 'row', gap: 3 },
+  testQuote: { fontFamily: fonts.serif, fontSize: 16, color: colors.charcoal, lineHeight: 24, fontStyle: 'italic' },
+  testMeta: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, marginTop: spacing.sm },
+  testAvatar: { width: 40, height: 40, borderRadius: radius.pill },
+  testName: { fontFamily: fonts.sans, color: colors.charcoal, fontSize: 13, fontWeight: '500' },
+  testRole: { fontFamily: fonts.sans, color: colors.muted, fontSize: 11 },
+
+  blogCard: { flexDirection: 'row', backgroundColor: colors.pearl, borderRadius: radius.lg, overflow: 'hidden', borderWidth: 1, borderColor: colors.border },
+  blogImg: { width: 110, height: 110 },
+  blogCat: { fontFamily: fonts.sans, color: colors.brandStrong, fontSize: 10, letterSpacing: 1.5 },
+  blogTitle: { fontFamily: fonts.serif, color: colors.charcoal, fontSize: 15, marginTop: 4, fontWeight: '500', lineHeight: 20 },
+  blogExcerpt: { fontFamily: fonts.sans, color: colors.muted, fontSize: 12, marginTop: 4, lineHeight: 16 },
+
+  quickGrid: { flexDirection: 'row', paddingHorizontal: spacing.xl, gap: spacing.md, flexWrap: 'wrap' },
+  quickCard: { flex: 1, minWidth: (W - spacing.xl * 2 - spacing.md) / 2, backgroundColor: colors.beige, padding: spacing.lg, borderRadius: radius.lg, alignItems: 'center', gap: spacing.sm },
+  quickLabel: { fontFamily: fonts.sans, color: colors.charcoal, fontSize: 13, fontWeight: '500' },
+
+  finalCta: { margin: spacing.xl, padding: spacing.xxl, borderRadius: radius.lg, backgroundColor: colors.charcoal, alignItems: 'center' },
+  finalTitle: { fontFamily: fonts.serif, color: colors.pearl, fontSize: 26, textAlign: 'center', fontWeight: '500' },
+  finalSub: { fontFamily: fonts.sans, color: 'rgba(252,251,249,0.7)', marginTop: spacing.sm, textAlign: 'center' },
+  btnPrimaryDark: { backgroundColor: colors.brand, paddingVertical: 14, paddingHorizontal: spacing.xxl, borderRadius: radius.pill, marginTop: spacing.lg },
+  btnPrimaryDarkText: { color: colors.charcoal, fontFamily: fonts.sans, fontWeight: '500', fontSize: 14 },
+
+  fab: { position: 'absolute', right: 20, bottom: 90, width: 54, height: 54, borderRadius: radius.pill, backgroundColor: colors.brand, alignItems: 'center', justifyContent: 'center', ...shadow.card },
+});
+"
+Observation: Create successful: /app/frontend/app/(tabs)/index.tsx

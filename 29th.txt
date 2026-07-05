@@ -1,0 +1,46 @@
+
+Action: file_editor create /app/frontend/app/faq.tsx --file-text "import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Feather } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import { colors, spacing, radius, fonts } from '@/src/theme';
+import { FAQ } from '@/src/data';
+
+export default function FaqPage() {
+  const [open, setOpen] = useState<number | null>(0);
+  const router = useRouter();
+  return (
+    <View style={{ flex: 1, backgroundColor: colors.surface }}>
+      <SafeAreaView edges={['top']} style={styles.head}>
+        <Pressable onPress={() => router.back()} style={styles.back}><Feather name=\"arrow-left\" size={20} color={colors.charcoal} /></Pressable>
+        <Text style={styles.eyebrow}>HELP</Text>
+        <Text style={styles.title}>Frequently Asked</Text>
+      </SafeAreaView>
+      <ScrollView contentContainerStyle={{ padding: spacing.xl, paddingBottom: 60, gap: spacing.md }} showsVerticalScrollIndicator={false}>
+        {FAQ.map((f, i) => (
+          <Pressable key={i} style={styles.item} onPress={() => setOpen(open === i ? null : i)} testID={`faq-${i}`}>
+            <View style={styles.row}>
+              <Text style={styles.q}>{f.q}</Text>
+              <Feather name={open === i ? 'minus' : 'plus'} size={18} color={colors.charcoal} />
+            </View>
+            {open === i && <Text style={styles.a}>{f.a}</Text>}
+          </Pressable>
+        ))}
+      </ScrollView>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  head: { paddingHorizontal: spacing.xl, paddingBottom: spacing.md, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border },
+  back: { width: 40, height: 40, borderRadius: radius.pill, borderWidth: 1, borderColor: colors.borderStrong, alignItems: 'center', justifyContent: 'center', marginTop: spacing.sm },
+  eyebrow: { color: colors.brandStrong, letterSpacing: 2, fontSize: 10, fontFamily: fonts.sans, marginTop: spacing.md },
+  title: { fontFamily: fonts.serif, fontSize: 30, color: colors.charcoal, fontWeight: '500', marginTop: 4 },
+  item: { padding: spacing.lg, backgroundColor: colors.beige, borderRadius: radius.md },
+  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: spacing.md },
+  q: { flex: 1, fontFamily: fonts.serif, color: colors.charcoal, fontSize: 15, fontWeight: '500' },
+  a: { fontFamily: fonts.sans, color: colors.charcoal, fontSize: 13, lineHeight: 20, marginTop: spacing.sm, opacity: 0.85 },
+});
+"
+Observation: Create successful: /app/frontend/app/faq.tsx

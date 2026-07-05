@@ -1,0 +1,6 @@
+
+Action: $ rm /app/frontend/app/index.tsx && ls /app/frontend/src/hooks/ 2>/dev/null && grep -r "useIconFonts" /app/frontend/src/hooks/ 2>/dev/null | head -3
+Observation: use-icon-fonts.ts
+/app/frontend/src/hooks/use-icon-fonts.ts:// Usage: const [loaded, error] = useIconFonts();
+/app/frontend/src/hooks/use-icon-fonts.ts:export const useIconFonts = (): readonly [boolean, Error | null] =>
+Exit code: 0

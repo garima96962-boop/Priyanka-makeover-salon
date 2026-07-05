@@ -1,0 +1,89 @@
+
+Action: file_editor create /app/frontend/src/data.ts --file-text "export type Service = {
+  id: string;
+  name: string;
+  category: string;
+  price: string;
+  duration: string;
+  image: string;
+  desc: string;
+};
+
+export const CATEGORIES = ['All', 'Bridal', 'Makeup', 'Hair', 'Skin', 'Nails', 'Mehndi'] as const;
+
+export const SERVICES: Service[] = [
+  { id: 'bridal', name: 'Signature Bridal Makeup', category: 'Bridal', price: '₹15,000+', duration: '3-4 hrs', image: 'https://images.unsplash.com/photo-1684868265715-03e19a3e0e00?w=900&auto=format&fit=crop', desc: 'A regal, HD-finished bridal look with lashes, contour and a hand-crafted skin base that lasts all day.' },
+  { id: 'engagement', name: 'Engagement Makeup', category: 'Bridal', price: '₹8,000+', duration: '2 hrs', image: 'https://images.unsplash.com/photo-1595475207225-428b62bda831?w=900&auto=format&fit=crop', desc: 'Soft, luminous engagement look that photographs beautifully in every light.' },
+  { id: 'reception', name: 'Reception Makeup', category: 'Bridal', price: '₹10,000+', duration: '2.5 hrs', image: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=900&auto=format&fit=crop', desc: 'Modern, glossy reception glam tailored to your outfit and jewellery.' },
+  { id: 'party', name: 'Party Makeup', category: 'Makeup', price: '₹3,500+', duration: '1.5 hrs', image: 'https://images.unsplash.com/photo-1596704017254-9b121068fb31?w=900&auto=format&fit=crop', desc: 'Bold, occasion-ready party looks — from classic smokey to shimmering festive glam.' },
+  { id: 'haircut', name: 'Haircut & Styling', category: 'Hair', price: '₹499+', duration: '45 min', image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=900&auto=format&fit=crop', desc: 'Precision haircut with a blow-dry finish, shaped for your face and lifestyle.' },
+  { id: 'spa', name: 'Hair Spa', category: 'Hair', price: '₹899+', duration: '1 hr', image: 'https://images.unsplash.com/photo-1633681926035-ec1ac984418a?w=900&auto=format&fit=crop', desc: 'Deep nourishment treatment that repairs dryness, adds shine and reduces frizz.' },
+  { id: 'smoothing', name: 'Hair Smoothing', category: 'Hair', price: '₹3,500+', duration: '2.5 hrs', image: 'https://images.unsplash.com/photo-1519415943484-9fa1873496d4?w=900&auto=format&fit=crop', desc: 'Salon-grade smoothing treatment for silky, manageable, frizz-free hair.' },
+  { id: 'straight', name: 'Permanent Straightening', category: 'Hair', price: '₹4,500+', duration: '3 hrs', image: 'https://images.unsplash.com/photo-1522337094846-8a818192de1f?w=900&auto=format&fit=crop', desc: 'Long-lasting straightening for pin-straight, glossy hair.' },
+  { id: 'color', name: 'Hair Colour', category: 'Hair', price: '₹1,499+', duration: '1.5 hrs', image: 'https://images.unsplash.com/photo-1552642986-ccb41e7059e7?w=900&auto=format&fit=crop', desc: 'Global or highlight colours using premium ammonia-safe brands.' },
+  { id: 'facial', name: 'Signature Facial', category: 'Skin', price: '₹999+', duration: '1 hr', image: 'https://images.unsplash.com/photo-1761718210089-ba3bb5ccb54f?w=900&auto=format&fit=crop', desc: 'Cleanse, exfoliate, mask and massage — for that lit-from-within glow.' },
+  { id: 'dtan', name: 'D-Tan Treatment', category: 'Skin', price: '₹599+', duration: '30 min', image: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=900&auto=format&fit=crop', desc: 'Instantly removes tan and reveals brighter, more even-toned skin.' },
+  { id: 'bleach', name: 'Bleaching', category: 'Skin', price: '₹399+', duration: '30 min', image: 'https://images.unsplash.com/photo-1631730359585-38a4935cbec4?w=900&auto=format&fit=crop', desc: 'Gentle bleach for a soft, uniform glow — safe on sensitive skin.' },
+  { id: 'threading', name: 'Threading', category: 'Skin', price: '₹49+', duration: '15 min', image: 'https://images.unsplash.com/photo-1560750588-73207b1ef5b8?w=900&auto=format&fit=crop', desc: 'Precise eyebrow shaping and upper-lip threading with minimum discomfort.' },
+  { id: 'waxing', name: 'Waxing', category: 'Skin', price: '₹299+', duration: '30 min', image: 'https://images.unsplash.com/photo-1583241800698-9c2e29b12cca?w=900&auto=format&fit=crop', desc: 'Standard warm waxing for smooth, silky skin.' },
+  { id: 'ricawax', name: 'Rica Wax', category: 'Skin', price: '₹599+', duration: '40 min', image: 'https://images.unsplash.com/photo-1607779097040-26e80aa78e66?w=900&auto=format&fit=crop', desc: 'Premium liposoluble Rica wax — gentle on sensitive skin, less painful.' },
+  { id: 'mani', name: 'Manicure & Pedicure', category: 'Nails', price: '₹899+', duration: '1 hr', image: 'https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=900&auto=format&fit=crop', desc: 'Detox, exfoliation and shine — feet and hands you love to show off.' },
+  { id: 'mehndi', name: 'Bridal Mehndi', category: 'Mehndi', price: '₹2,500+', duration: '2-4 hrs', image: 'https://images.unsplash.com/photo-1600002415942-0efe9d18a4b4?w=900&auto=format&fit=crop', desc: 'Intricate hand-drawn bridal mehndi with rich, long-lasting stain.' },
+];
+
+export const GALLERY: { id: string; url: string; category: string; height: number }[] = [
+  { id: 'g1', url: 'https://images.unsplash.com/photo-1595475207225-428b62bda831?w=800&auto=format&fit=crop', category: 'Bridal', height: 320 },
+  { id: 'g2', url: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=800&auto=format&fit=crop', category: 'Bridal', height: 240 },
+  { id: 'g3', url: 'https://images.unsplash.com/photo-1596704017254-9b121068fb31?w=800&auto=format&fit=crop', category: 'Party', height: 280 },
+  { id: 'g4', url: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&auto=format&fit=crop', category: 'Hair', height: 220 },
+  { id: 'g5', url: 'https://images.unsplash.com/photo-1552642986-ccb41e7059e7?w=800&auto=format&fit=crop', category: 'Hair', height: 300 },
+  { id: 'g6', url: 'https://images.unsplash.com/photo-1761718210089-ba3bb5ccb54f?w=800&auto=format&fit=crop', category: 'Skin', height: 240 },
+  { id: 'g7', url: 'https://images.unsplash.com/photo-1600002415942-0efe9d18a4b4?w=800&auto=format&fit=crop', category: 'Mehndi', height: 280 },
+  { id: 'g8', url: 'https://images.pexels.com/photos/27165073/pexels-photo-27165073.jpeg?auto=compress&w=800', category: 'Interior', height: 260 },
+  { id: 'g9', url: 'https://images.unsplash.com/photo-1684868265715-03e19a3e0e00?w=800&auto=format&fit=crop', category: 'Bridal', height: 340 },
+  { id: 'g10', url: 'https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=800&auto=format&fit=crop', category: 'Nails', height: 220 },
+  { id: 'g11', url: 'https://images.unsplash.com/photo-1519415943484-9fa1873496d4?w=800&auto=format&fit=crop', category: 'Hair', height: 260 },
+  { id: 'g12', url: 'https://images.unsplash.com/photo-1633681926035-ec1ac984418a?w=800&auto=format&fit=crop', category: 'Skin', height: 240 },
+];
+
+export const GALLERY_CATEGORIES = ['All', 'Bridal', 'Party', 'Hair', 'Skin', 'Nails', 'Mehndi', 'Interior'];
+
+export const TESTIMONIALS = [
+  { id: 't1', name: 'Ritika Sharma', role: 'Bride', rating: 5, avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&auto=format&fit=crop', quote: 'Priyanka ma\'am made me feel like a queen on my wedding day. My makeup lasted through 12 hours of ceremonies and still looked flawless in photos.' },
+  { id: 't2', name: 'Neha Verma', role: 'Reception Client', rating: 5, avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop', quote: 'The reception makeup was divine — glowy, elegant and exactly what I wanted. My in-laws couldn\'t stop complimenting.' },
+  { id: 't3', name: 'Aditi Singh', role: 'Party Makeup', rating: 5, avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&auto=format&fit=crop', quote: 'Best party makeup I\'ve ever had. The base finish and eye work is next-level. Highly recommend for any occasion.' },
+  { id: 't4', name: 'Pooja Yadav', role: 'Hair Spa', rating: 5, avatar: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200&auto=format&fit=crop', quote: 'My hair feels softer and healthier after the spa. The staff is so warm and the salon is spotlessly clean.' },
+];
+
+export const OFFERS = [
+  { id: 'o1', title: 'Bridal Package', discount: '20% OFF', desc: 'Complete bridal package with pre-bridal skincare, hair, mehndi and D-Day makeup.', color: '#F4DEDC' },
+  { id: 'o2', title: 'Facial + D-Tan Combo', discount: '30% OFF', desc: 'Signature facial paired with D-tan for an instant radiant glow.', color: '#E5D3B3' },
+  { id: 'o3', title: 'Refer & Earn', discount: '₹500 OFF', desc: 'Refer a friend and both of you get ₹500 off on your next service.', color: '#F5F0EA' },
+  { id: 'o4', title: 'Loyalty Rewards', discount: 'Free Facial', desc: 'Book 5 services and enjoy a complimentary signature facial on us.', color: '#F4DEDC' },
+];
+
+export const BLOG = [
+  { id: 'b1', title: '10 Bridal Skincare Tips for a Flawless Wedding Glow', excerpt: 'From 3 months out to the D-Day morning — everything a bride-to-be should do to look radiant.', cover: 'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=1000&auto=format&fit=crop', category: 'Bridal', date: 'May 12, 2026', body: 'Your bridal glow starts long before your wedding day. Start a consistent skincare routine at least three months in advance — cleanser, vitamin C serum, moisturiser and daily sunscreen are non-negotiable. Book a professional consultation to identify any pigmentation, acne or tan concerns and treat them early. Hydration, 7-8 hours of sleep, a balanced diet rich in antioxidants, and stress management through yoga or meditation are equally important. In the final month, avoid experimenting with any new products — stick to what works. On the D-Day morning, cleanse gently, apply a lightweight moisturiser and let your makeup artist take it from there.' },
+  { id: 'b2', title: 'Hair Care in Summer: Protect, Nourish, Shine', excerpt: 'Beat the heat with these salon-approved hair care rituals for shiny, frizz-free hair.', cover: 'https://images.unsplash.com/photo-1519415943484-9fa1873496d4?w=1000&auto=format&fit=crop', category: 'Hair', date: 'April 28, 2026', body: 'Summer heat, humidity and pollution can leave hair dull and brittle. Wash your hair with a sulphate-free shampoo twice a week, and always follow with a deep-conditioning mask. Use a UV-protection hair serum before stepping out, and tie your hair loosely to avoid breakage. A monthly hair spa at the salon works wonders — the steam opens up the cuticles allowing nutrients to penetrate deeply. Trim ends every 6-8 weeks to keep split ends at bay.' },
+  { id: 'b3', title: 'Festival Makeup Trends 2026', excerpt: 'From glossy lids to jewel-toned lips, here\'s what\'s trending for this festive season.', cover: 'https://images.unsplash.com/photo-1596704017254-9b121068fb31?w=1000&auto=format&fit=crop', category: 'Makeup', date: 'April 10, 2026', body: 'This festive season is all about luminous skin, glossy eyelids and rich jewel-toned lips. A dewy base with strobing on the high points of the face is trending strong. Pair it with a soft smokey brown eye, a touch of glitter on the lid centre and defined kajal. Deep berry, oxblood and terracotta are the go-to lip shades. Finish with your favourite fragrance and confidence — that\'s the real trend.' },
+  { id: 'b4', title: 'How to Choose the Right Foundation Shade', excerpt: 'Never guess again — our simple guide to finding your perfect foundation match.', cover: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=1000&auto=format&fit=crop', category: 'Skin', date: 'March 22, 2026', body: 'The perfect foundation should disappear into your skin. Test three shades along your jawline in natural daylight — the one that blends invisibly is yours. Consider your undertone: warm (yellow/gold), cool (pink/red) or neutral. Oily skin needs matte finishes, dry skin prefers luminous ones. Sample before buying, and always match to the neck, not the wrist or face.' },
+];
+
+export const FAQ = [
+  { q: 'How do I book an appointment?', a: 'You can book directly from the Book Appointment screen in this app, WhatsApp us on +91 63914 40029, or call us. We confirm all bookings within a few hours.' },
+  { q: 'What is included in the Bridal Package?', a: 'Our signature bridal package includes pre-bridal skincare sessions, engagement, mehndi, haldi and D-Day HD bridal makeup with hair styling and draping. Custom packages available on request.' },
+  { q: 'Can I cancel or reschedule?', a: 'Yes — you may cancel or reschedule up to 24 hours before your appointment free of charge. Bridal bookings require 7 days notice.' },
+  { q: 'Which products do you use?', a: 'We only use premium, dermatologist-approved brands — MAC, Huda Beauty, Bobbi Brown, Kryolan, L\'Oreal Professional, Schwarzkopf and Rica for waxing.' },
+  { q: 'Do you offer home service?', a: 'Yes, we offer home service for bridal, engagement and reception makeup. Home service is subject to availability and location. Additional travel charges may apply.' },
+  { q: 'What payment methods are accepted?', a: 'We accept cash, UPI, all major credit/debit cards and online transfers. For bridal bookings, a 30% advance is required to confirm your date.' },
+  { q: 'How hygienic is your salon?', a: 'Extremely — all tools are sanitised after every use, disposables are single-use, and our staff follow strict hygiene protocols. Your safety and comfort are our top priority.' },
+];
+
+export const WHY_CHOOSE = [
+  { icon: 'award', title: '8+ Years Experience', desc: 'Certified artists with hundreds of happy brides.' },
+  { icon: 'shield', title: 'Premium Hygiene', desc: 'Sanitised tools, single-use disposables, spotless studio.' },
+  { icon: 'star', title: 'Luxury Products', desc: 'Only MAC, Huda, Bobbi Brown, Kryolan & more.' },
+  { icon: 'heart', title: '500+ Happy Brides', desc: 'Trusted by hundreds of families across Gorakhpur.' },
+];
+"
+Observation: Create successful: /app/frontend/src/data.ts

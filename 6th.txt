@@ -1,0 +1,16 @@
+Now I have design guidelines and integration playbook. Let me plan:
+
+<Plan>
+- Backend: Add bookings CRUD (public POST, admin protected list/update), admin JWT login (seeded from .env), newsletter subscribe, testimonials list
+- Frontend structure: Bottom tabs (Home, Services, Gallery, Book, Contact) + stack routes for About, Bridal Portfolio, Testimonials, Offers, Blog, Blog Detail, FAQ, Admin Login, Admin Dashboard
+- Design system: Static theme module with color/spacing/typography tokens matching design_guidelines.json. Use Georgia serif fallback since we can't use expo-google-fonts. Use expo-linear-gradient, expo-blur, expo-image, Feather icons
+- Static content (services, gallery, blog, testimonials, offers, FAQ) seeded in frontend data module
+- Contact: Phone 6391440029, Instagram priyankamakeover4422, address Pipiganj Main Market
+- Admin: seeded from env, JWT
+</Plan>
+Action: $ cd /app/backend && pip install "python-jose[cryptography]" >/dev/null 2>&1 && pip freeze | grep -Ei "jose|jwt|passlib|bcrypt" | head -20
+Observation: bcrypt==4.1.3
+passlib==1.7.4
+PyJWT==2.13.0
+python-jose==3.5.0
+Exit code: 0

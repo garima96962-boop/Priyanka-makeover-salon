@@ -1,0 +1,92 @@
+Now the stack screens (about, bridal, testimonials, offers, blog, blog/[id], faq, admin/login, admin/dashboard). Let me create them:
+Action: file_editor create /app/frontend/app/about.tsx --file-text "import React from 'react';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { Image } from 'expo-image';
+import { LinearGradient } from 'expo-linear-gradient';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Feather } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import { colors, spacing, radius, fonts, CONTACT } from '@/src/theme';
+
+const HERO = 'https://images.pexels.com/photos/27165073/pexels-photo-27165073.jpeg?auto=compress&w=1200';
+
+export default function About() {
+  const router = useRouter();
+  return (
+    <View style={{ flex: 1, backgroundColor: colors.surface }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 60 }} showsVerticalScrollIndicator={false}>
+        <View style={styles.hero}>
+          <Image source={HERO} style={StyleSheet.absoluteFillObject} contentFit=\"cover\" />
+          <LinearGradient colors={['rgba(31,31,31,0.2)', 'rgba(31,31,31,0.85)']} style={StyleSheet.absoluteFillObject} />
+          <SafeAreaView edges={['top']} style={styles.heroInner}>
+            <Pressable onPress={() => router.back()} style={styles.back} hitSlop={12}>
+              <Feather name=\"arrow-left\" size={20} color={colors.pearl} />
+            </Pressable>
+            <View style={{ flex: 1 }} />
+            <Text style={styles.eyebrow}>ABOUT</Text>
+            <Text style={styles.title}>Our Story</Text>
+            <Text style={styles.sub}>Where luxury meets warmth</Text>
+          </SafeAreaView>
+        </View>
+
+        <View style={{ padding: spacing.xl }}>
+          <Text style={styles.para}>
+            Priyakamakeover & Salon was born from a simple belief — that every woman deserves to feel beautiful, confident and celebrated on her most cherished days. Nestled in the heart of Pipiganj, our studio blends high-street artistry with the warmth of a family salon.
+          </Text>
+
+          <Section title=\"Our Mission\">
+            To make every client feel radiant, whether it&apos;s her wedding day, an anniversary, a festival, or simply a Tuesday morning.
+          </Section>
+
+          <Section title=\"Our Vision\">
+            To be the most trusted luxury beauty destination in Gorakhpur — known for uncompromising quality, hygiene and artistry.
+          </Section>
+
+          <Section title=\"Hygiene Standards\">
+            All tools are sanitised after every client. Single-use disposables for waxing, threading and lash extensions. Our studio is deep-cleaned daily.
+          </Section>
+
+          <Section title=\"Premium Products\">
+            We use only globally trusted brands — MAC, Huda Beauty, Bobbi Brown, Kryolan, L&apos;Oréal Professional, Schwarzkopf and Rica. No compromises, ever.
+          </Section>
+
+          <Section title=\"Our Commitment\">
+            Every service is personalised. Every consultation is unrushed. Every client walks out feeling seen, heard and beautiful.
+          </Section>
+
+          <View style={styles.contactCard}>
+            <Text style={styles.contactTitle}>Come Visit Us</Text>
+            <Text style={styles.contactAddr}>{CONTACT.address}</Text>
+            <Text style={styles.contactAddr}>{CONTACT.hours}</Text>
+          </View>
+        </View>
+      </ScrollView>
+    </View>
+  );
+}
+
+function Section({ title, children }: { title: string; children: string }) {
+  return (
+    <View style={styles.section}>
+      <Text style={styles.sectionTitle}>{title}</Text>
+      <Text style={styles.para}>{children}</Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  hero: { height: 360, overflow: 'hidden' },
+  heroInner: { flex: 1, paddingHorizontal: spacing.xl, paddingBottom: spacing.xl },
+  back: { width: 40, height: 40, borderRadius: radius.pill, backgroundColor: 'rgba(252,251,249,0.15)', borderWidth: 1, borderColor: 'rgba(252,251,249,0.4)', alignItems: 'center', justifyContent: 'center', marginTop: spacing.sm },
+  eyebrow: { color: colors.brand, letterSpacing: 3, fontSize: 11, fontFamily: fonts.sans },
+  title: { fontFamily: fonts.serif, color: colors.pearl, fontSize: 40, fontWeight: '500', marginTop: 6 },
+  sub: { fontFamily: fonts.sans, color: 'rgba(252,251,249,0.85)', marginTop: 4, fontSize: 13 },
+  section: { marginTop: spacing.xl },
+  sectionTitle: { fontFamily: fonts.serif, fontSize: 22, color: colors.charcoal, fontWeight: '500', marginBottom: spacing.sm },
+  para: { fontFamily: fonts.sans, color: colors.charcoal, fontSize: 14, lineHeight: 22, opacity: 0.85 },
+  contactCard: { marginTop: spacing.xxl, padding: spacing.xl, backgroundColor: colors.beige, borderRadius: radius.lg },
+  contactTitle: { fontFamily: fonts.serif, fontSize: 20, color: colors.charcoal, fontWeight: '500', marginBottom: spacing.sm },
+  contactAddr: { fontFamily: fonts.sans, fontSize: 13, color: colors.charcoal, marginTop: 2 },
+});
+"
+Observation: Create successful: /app/frontend/app/about.tsx

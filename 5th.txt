@@ -1,0 +1,213 @@
+
+Action: file_editor view /app/design_guidelines.json
+Observation: [Showing lines 1-209 of 209 total] /app/design_guidelines.json:
+1|{
+2|  "app_name": "Priyakamakeover & Salon",
+3|  "personality": "3 Editorial Mobile LIGHT with 6 Glass / Luxe surfaces",
+4|  "personality_one_liner": "A cinematic, deeply elegant, and trustworthy luxury salon experience that frames beauty through pristine spacing and sophisticated glass typography.",
+5|  "color": {
+6|    "light": {
+7|      "surface": "#FCFBF9",
+8|      "onSurface": "#1F1F1F",
+9|      "surfaceSecondary": "#F5F0EA",
+10|      "onSurfaceSecondary": "#1F1F1F",
+11|      "surfaceTertiary": "#F4DEDC",
+12|      "onSurfaceTertiary": "#1F1F1F",
+13|      "surfaceInverse": "#1F1F1F",
+14|      "onSurfaceInverse": "#F5F0EA",
+15|      "brand": "#E5D3B3",
+16|      "brandPrimary": "#1F1F1F",
+17|      "onBrandPrimary": "#E5D3B3",
+18|      "brandSecondary": "#E5D3B3",
+19|      "onBrandSecondary": "#1F1F1F",
+20|      "brandTertiary": "#F4DEDC",
+21|      "onBrandTertiary": "#1F1F1F",
+22|      "success": "#D2E5D0",
+23|      "onSuccess": "#1F1F1F",
+24|      "warning": "#E5D3B3",
+25|      "onWarning": "#1F1F1F",
+26|      "error": "#E5C9C9",
+27|      "onError": "#1F1F1F",
+28|      "info": "#F5F0EA",
+29|      "onInfo": "#1F1F1F",
+30|      "border": "rgba(31,31,31,0.08)",
+31|      "borderStrong": "rgba(31,31,31,0.16)",
+32|      "divider": "rgba(31,31,31,0.06)"
+33|    },
+34|    "dark": {
+35|      "surface": "#121212",
+36|      "onSurface": "#F5F0EA",
+37|      "surfaceSecondary": "#1F1F1F",
+38|      "onSurfaceSecondary": "#FCFBF9",
+39|      "surfaceTertiary": "#3D302F",
+40|      "onSurfaceTertiary": "#F4DEDC",
+41|      "surfaceInverse": "#F5F0EA",
+42|      "onSurfaceInverse": "#1F1F1F",
+43|      "brand": "#C5B18D",
+44|      "brandPrimary": "#E5D3B3",
+45|      "onBrandPrimary": "#1F1F1F",
+46|      "brandSecondary": "#E5D3B3",
+47|      "onBrandSecondary": "#1F1F1F",
+48|      "brandTertiary": "#3D302F",
+49|      "onBrandTertiary": "#F4DEDC",
+50|      "success": "#2D3E2B",
+51|      "onSuccess": "#D2E5D0",
+52|      "warning": "#3D3017",
+53|      "onWarning": "#E5D3B3",
+54|      "error": "#4A2727",
+55|      "onError": "#E5C9C9",
+56|      "info": "#1F1F1F",
+57|      "onInfo": "#F5F0EA",
+58|      "border": "rgba(245,240,234,0.10)",
+59|      "borderStrong": "rgba(245,240,234,0.20)",
+60|      "divider": "rgba(245,240,234,0.08)"
+61|    }
+62|  },
+63|  "typography": {
+64|    "displayFontFamily": "PlayfairDisplay_500Medium",
+65|    "textFontFamily": "DMSans_500Medium",
+66|    "scale": {
+67|      "sm": 12,
+68|      "base": 14,
+69|      "lg": 16,
+70|      "xl": 20,
+71|      "2xl": 24
+72|    }
+73|  },
+74|  "spacing": {
+75|    "rule": "Generous magazine-like breathing room; intentional padding around all content; whitespace is deliberate and luxurious.",
+76|    "xs": 4,
+77|    "sm": 8,
+78|    "md": 12,
+79|    "lg": 16,
+80|    "xl": 24,
+81|    "2xl": 32,
+82|    "3xl": 48
+83|  },
+84|  "radius_tokens": {
+85|    "sm": 6,
+86|    "md": 12,
+87|    "lg": 20,
+88|    "pill": 999
+89|  },
+90|  "shadow_tier": "1",
+91|  "navigation": "bottom_tabs",
+92|  "icon_set": "Feather",
+93|  "glassmorphism": {
+94|    "enabled": true,
+95|    "do's": [
+96|      "Use frosted glass overlay on sticky headers over scrolling content",
+97|      "Apply to bottom tab bar when content scrolls behind it",
+98|      "Use over featured/hero cards to elevate typography against photo backdrops"
+99|    ],
+100|    "dont's": [
+101|      "Never blur body text regions or form fields",
+102|      "Do not over-stack blur surfaces; cap at 2 per screen (e.g. header + tab bar)",
+103|      "Do not blur without a translucent tinted base to ensure contrast"
+104|    ]
+105|  },
+106|  "platform_libraries": {
+107|    "glass": {
+108|      "ios": "expo-glass-effect",
+109|      "android": "expo-blur",
+110|      "low_end_android_fallback": "solid surfaceSecondary"
+111|    },
+112|    "image": "expo-image",
+113|    "blur": "expo-blur",
+114|    "bottom_sheet": "@gorhom/bottom-sheet",
+115|    "animation": "react-native-reanimated",
+116|    "gesture": "react-native-gesture-handler"
+117|  },
+118|  "screens": [
+119|    {
+120|      "name": "Home",
+121|      "purpose": "Serve as a luxurious introduction to the salon, showcasing hero bridal looks, key services, and an immediate path to book an appointment.",
+122|      "states": {
+123|        "loading": "Centered minimalist spinner in Champagne Gold over Pearl White background.",
+124|        "empty": "N/A - static feed of curated sections.",
+125|        "error": "Elegant text message 'Failed to load content' with a refined retry button."
+126|      },
+127|      "layout": "Root uses a scroll view. Top features a cinematic full-width hero image with a vertical gradient-to-dark scrim and large Playfair Display heading overlay. Below, a horizontal scroll of 'Featured Services' in rounded cards (width: 80%) with subtle image backdrops. Include a 'Why Choose Us' 2-column icon grid. End with a Testimonials carousel. A primary 'Book Appointment' button is sticky at the bottom."
+128|    },
+129|    {
+130|      "name": "Services",
+131|      "purpose": "A catalog of all beauty and salon services categorized cleanly for easy browsing and booking.",
+132|      "states": {
+133|        "loading": "Skeleton loaders for cards.",
+134|        "empty": "Illustration of a mirror with text 'No services found in this category'.",
+135|        "error": "Elegant text message with retry button."
+136|      },
+137|      "layout": "Sticky glassmorphism header containing pill-style category filters (e.g., Threading, Bridal, Waxing, Hair). Below, a single-column list of service cards with generous md padding, a soft border, price, and a subtle 'Book' CTA on each row."
+138|    },
+139|    {
+140|      "name": "Bridal Portfolio",
+141|      "purpose": "Showcase high-quality transformative makeup and bridal looks in an editorial masonry layout.",
+142|      "states": {
+143|        "loading": "Staggered skeleton blocks representing masonry layout.",
+144|        "empty": "Elegant camera icon stating 'No portfolio images available yet'.",
+145|        "error": "Refined error text with retry action."
+146|      },
+147|      "layout": "A 2-column masonry grid layout with zero spacing gaps (edge-to-edge) or standard lg gaps, depending on visual weight. Tapping an image opens a full-screen view with a glassmorphism close button."
+148|    },
+149|    {
+150|      "name": "Book Appointment",
+151|      "purpose": "Frictionless, clear form to schedule a salon visit.",
+152|      "states": {
+153|        "loading": "Spinner during form submission.",
+154|        "empty": "N/A",
+155|        "error": "Inline red/muted rose validation errors below form inputs."
+156|      },
+157|      "layout": "Single-column form with labels above inputs. Uses surfaceTertiary for input backgrounds. Includes a custom date/time picker layout. A sticky 'Confirm Booking' button lives at the bottom inside a KeyboardAvoidingView."
+158|    },
+159|    {
+160|      "name": "Contact",
+161|      "purpose": "Display location, hours, and direct communication links (WhatsApp, Call, Instagram).",
+162|      "states": {
+163|        "loading": "N/A",
+164|        "empty": "N/A",
+165|        "error": "N/A"
+166|      },
+167|      "layout": "Large editorial typography for the address. A visual map placeholder image. Large touch-target buttons for Call and WhatsApp (rendered in brandPrimary/onBrandPrimary) layered over a soft background."
+168|    }
+169|  ],
+170|  "images": {
+171|    "hero_home": {
+172|      "url": "https://images.pexels.com/photos/33466159/pexels-photo-33466159.jpeg",
+173|      "dark": "https://images.pexels.com/photos/35341718/pexels-photo-35341718.jpeg",
+174|      "alt": "Elegant bride with veil and pearls"
+175|    },
+176|    "service_bridal": {
+177|      "url": "https://images.unsplash.com/photo-1684868265715-03e19a3e0e00",
+178|      "alt": "Luxury bridal makeup portrait"
+179|    },
+180|    "service_skincare": {
+181|      "url": "https://images.unsplash.com/photo-1761718210089-ba3bb5ccb54f",
+182|      "alt": "Relaxing facial skincare treatment"
+183|    },
+184|    "salon_interior": {
+185|      "url": "https://images.pexels.com/photos/27165073/pexels-photo-27165073.jpeg",
+186|      "alt": "High end elegant hair salon interior"
+187|    },
+188|    "brand_logo_fallback": {
+189|      "url": "",
+190|      "alt": "Priyakamakeover & Salon logo transparent (Initials fallback used since selector returned irrelevant image)"
+191|    }
+192|  },
+193|  "instructions_to_main_agent": [
+194|    "Strictly follow the color palette tokens. Ensure that no blues, purples, or neon colors are introduced. The theme heavily relies on Pearl White, Warm Beige, Soft Blush Pink, Champagne Gold, and Charcoal Black.",
+195|    "Implement the sticky primary CTA over scrolling content pattern for the 'Book Appointment' actions.",
+196|    "Apply gradient-to-dark scrims using a 3-stop vertical gradient on any image surface that features overlaid text (e.g., the Home screen hero banner).",
+197|    "Ensure all fonts are capped at a maximum weight of 500 (Medium). Do not use Bold, SemiBold, or Black weights. Use font size to communicate hierarchy, adhering to the provided typographic scale.",
+198|    "Utilize glassmorphism (via expo-blur) paired with a tinted underlay on sticky headers, bottom tab bars, and floating controls to deliver the requested luxury and cinematic aesthetic.",
+199|    "When displaying the salon's logo, use the initials 'P&S' styled elegantly inside a circular or square surfaceTertiary container, as the image selector failed to return an appropriate salon logo.",
+200|    "Always provide Empty, Error, and Loading states for screens fetching data."
+201|  ],
+202|  "haptics": {
+203|    "primary_button_press": "impactMedium",
+204|    "tab_change": "selection",
+205|    "category_filter_tap": "impactLight",
+206|    "form_submit_success": "notificationSuccess",
+207|    "form_submit_error": "notificationError"
+208|  }
+209|}
+[End of file]

@@ -1,0 +1,100 @@
+
+Action: file_editor create /app/frontend/src/theme.ts --file-text "import { Platform } from 'react-native';
+
+export const colors = {
+  surface: '#FCFBF9',
+  onSurface: '#1F1F1F',
+  surfaceSecondary: '#F5F0EA',
+  surfaceTertiary: '#F4DEDC', // soft blush pink
+  surfaceInverse: '#1F1F1F',
+  onSurfaceInverse: '#F5F0EA',
+  brand: '#E5D3B3', // champagne gold
+  brandStrong: '#C5A87A',
+  brandPrimary: '#1F1F1F',
+  onBrandPrimary: '#E5D3B3',
+  blush: '#F4DEDC',
+  beige: '#F5F0EA',
+  pearl: '#FCFBF9',
+  gold: '#E5D3B3',
+  charcoal: '#1F1F1F',
+  muted: '#6E6A65',
+  border: 'rgba(31,31,31,0.08)',
+  borderStrong: 'rgba(31,31,31,0.16)',
+  divider: 'rgba(31,31,31,0.06)',
+  success: '#4A6B3F',
+  warning: '#B8892F',
+  error: '#B04040',
+  white: '#FFFFFF',
+  overlay: 'rgba(31,31,31,0.55)',
+};
+
+export const spacing = {
+  xs: 4,
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 24,
+  xxl: 32,
+  xxxl: 48,
+};
+
+export const radius = {
+  sm: 6,
+  md: 12,
+  lg: 20,
+  xl: 28,
+  pill: 999,
+};
+
+export const fonts = {
+  serif: Platform.select({
+    ios: 'Georgia',
+    android: 'serif',
+    default: 'Georgia',
+  }) as string,
+  sans: Platform.select({
+    ios: 'System',
+    android: 'sans-serif',
+    default: 'System',
+  }) as string,
+};
+
+export const shadow = {
+  card: {
+    shadowColor: '#1F1F1F',
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 3,
+  },
+  soft: {
+    shadowColor: '#1F1F1F',
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 2,
+  },
+};
+
+export const type = {
+  display: { fontFamily: fonts.serif, fontWeight: '500' as const, color: colors.charcoal },
+  heading: { fontFamily: fonts.serif, fontWeight: '500' as const, color: colors.charcoal },
+  body: { fontFamily: fonts.sans, color: colors.charcoal },
+  muted: { fontFamily: fonts.sans, color: colors.muted },
+};
+
+export const CONTACT = {
+  phone: '+91 63914 40029',
+  phoneRaw: '+916391440029',
+  whatsapp: '916391440029',
+  instagram: 'priyankamakeover4422',
+  instagramUrl: 'https://instagram.com/priyankamakeover4422',
+  address: 'Pipiganj, Main Market, Gorakhpur, UP',
+  addressShort: 'Pipiganj, Main Market',
+  hours: 'Mon – Sun · 9:00 AM – 9:00 PM',
+  email: 'priyankamakeover4422@gmail.com',
+  brand: 'Priyakamakeover & Salon',
+  tagline: 'Enhancing Your Beauty with Style & Elegance',
+};
+"
+Observation: Create successful: /app/frontend/src/theme.ts

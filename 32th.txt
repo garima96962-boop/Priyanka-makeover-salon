@@ -1,0 +1,9 @@
+Now let me restart services, verify backend, and run lint checks in parallel:
+Action: $ sudo supervisorctl restart backend expo 2>&1 | tail -6 && sleep 3 && curl -s http://localhost:8001/api/ && echo && curl -s -X POST http://localhost:8001/api/admin/login -H "Content-Type: application/json" -d '{"email":"admin@priyakamakeover.com","password":"Priyaka@Salon2026"}' | head -c 300
+Observation: backend: stopped
+expo: stopped
+backend: started
+expo: started
+{"message":"Priyakamakeover & Salon API","status":"ok"}
+{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBwcml5YWthbWFrZW92ZXIuY29tIiwiZXhwIjoxNzgzMjczMTkzLCJpYXQiOjE3ODMxODY3OTN9.3z2W23h4lbne9h-AstAFegk8GawswXabeu2O_KHwjJ0","token_type":"bearer","email":"admin@priyakamakeover.com"}
+Exit code: 0

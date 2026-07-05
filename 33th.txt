@@ -1,0 +1,8 @@
+Backend is working (login returned a token). Only warnings, no errors. Let me test creating a booking and taking a screenshot:
+Action: $ curl -s -X POST http://localhost:8001/api/bookings -H "Content-Type: application/json" -d '{"name":"Test User","phone":"9876543210","email":"t@t.com","service":"Bridal Makeup","preferred_date":"2026-05-20","preferred_time":"10:00 AM","notes":"Test"}' | head -c 400
+echo
+TOKEN=$(curl -s -X POST http://localhost:8001/api/admin/login -H "Content-Type: application/json" -d '{"email":"admin@priyakamakeover.com","password":"Priyaka@Salon2026"}' | python3 -c "import sys,json;print(json.load(sys.stdin)['access_token'])")
+curl -s http://localhost:8001/api/admin/bookings -H "Authorization: Bearer $TOKEN" | head -c 500
+Observation: {"id":"6382e982-9209-464f-9dea-180793b56495","name":"Test User","phone":"9876543210","email":"t@t.com","service":"Bridal Makeup","preferred_date":"2026-05-20","preferred_time":"10:00 AM","notes":"Test","status":"pending","created_at":"2026-07-04T17:40:02.383815+00:00"}
+[{"id":"6382e982-9209-464f-9dea-180793b56495","name":"Test User","phone":"9876543210","email":"t@t.com","service":"Bridal Makeup","preferred_date":"2026-05-20","preferred_time":"10:00 AM","notes":"Test","status":"pending","created_at":"2026-07-04T17:40:02.383815+00:00"}]
+Exit code: 0

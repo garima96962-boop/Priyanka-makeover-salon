@@ -1,0 +1,8 @@
+Good — all needed backend libs are already installed. Now let me write the backend and frontend.
+Action: file_editor create /app/backend/.env --file-text "MONGO_URL=\"mongodb://localhost:27017\"
+DB_NAME=\"priyaka_salon\"
+JWT_SECRET=\"c2f9a1e6d94b7f3a20b8dcaf115a7e2f5d0c6b9418e2734abfcd8e91f620a4bc\"
+ADMIN_EMAIL=\"admin@priyakamakeover.com\"
+ADMIN_PASSWORD=\"Priyaka@Salon2026\"
+"
+Observation: Overwrite successful: /app/backend/.env

@@ -1,0 +1,49 @@
+
+Action: file_editor create /app/frontend/app/blog/[id].tsx --file-text "import React from 'react';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { Image } from 'expo-image';
+import { LinearGradient } from 'expo-linear-gradient';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Feather } from '@expo/vector-icons';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { colors, spacing, radius, fonts } from '@/src/theme';
+import { BLOG } from '@/src/data';
+
+export default function BlogDetail() {
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const router = useRouter();
+  const post = BLOG.find((p) => p.id === id) || BLOG[0];
+
+  return (
+    <View style={{ flex: 1, backgroundColor: colors.surface }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 60 }} showsVerticalScrollIndicator={false}>
+        <View style={styles.hero}>
+          <Image source={post.cover} style={StyleSheet.absoluteFillObject} contentFit=\"cover\" />
+          <LinearGradient colors={['rgba(31,31,31,0.2)', 'rgba(31,31,31,0.85)']} style={StyleSheet.absoluteFillObject} />
+          <SafeAreaView edges={['top']} style={styles.heroInner}>
+            <Pressable onPress={() => router.back()} style={styles.back}><Feather name=\"arrow-left\" size={20} color={colors.pearl} /></Pressable>
+            <View style={{ flex: 1 }} />
+            <Text style={styles.cat}>{post.category.toUpperCase()} · {post.date}</Text>
+            <Text style={styles.title}>{post.title}</Text>
+          </SafeAreaView>
+        </View>
+        <View style={{ padding: spacing.xl }}>
+          <Text style={styles.excerpt}>{post.excerpt}</Text>
+          <Text style={styles.body}>{post.body}</Text>
+        </View>
+      </ScrollView>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  hero: { height: 360, overflow: 'hidden' },
+  heroInner: { flex: 1, paddingHorizontal: spacing.xl, paddingBottom: spacing.xl },
+  back: { width: 40, height: 40, borderRadius: radius.pill, backgroundColor: 'rgba(252,251,249,0.15)', borderWidth: 1, borderColor: 'rgba(252,251,249,0.4)', alignItems: 'center', justifyContent: 'center', marginTop: spacing.sm },
+  cat: { color: colors.brand, letterSpacing: 2, fontSize: 10, fontFamily: fonts.sans },
+  title: { fontFamily: fonts.serif, color: colors.pearl, fontSize: 30, fontWeight: '500', marginTop: 6, lineHeight: 36 },
+  excerpt: { fontFamily: fonts.serif, fontStyle: 'italic', color: colors.charcoal, fontSize: 17, lineHeight: 26 },
+  body: { fontFamily: fonts.sans, color: colors.charcoal, fontSize: 14, lineHeight: 24, opacity: 0.85, marginTop: spacing.lg },
+});
+"
+Observation: Create successful: /app/frontend/app/blog/[id].tsx

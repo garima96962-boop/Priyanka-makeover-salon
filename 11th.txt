@@ -1,0 +1,95 @@
+
+Action: file_editor create /app/frontend/src/api.ts --file-text "import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const BASE = process.env.EXPO_PUBLIC_BACKEND_URL || '';
+
+const url = (p: string) => `${BASE}/api${p}`;
+
+export type BookingCreate = {
+  name: string;
+  phone: string;
+  email?: string;
+  service: string;
+  preferred_date: string;
+  preferred_time: string;
+  notes?: string;
+};
+
+export type Booking = BookingCreate & {
+  id: string;
+  status: string;
+  created_at: string;
+};
+
+const TOKEN_KEY = 'priyaka_admin_token';
+
+export async function saveToken(t: string) {
+  await AsyncStorage.setItem(TOKEN_KEY, t);
+}
+export async function getToken() {
+  return AsyncStorage.getItem(TOKEN_KEY);
+}
+export async function clearToken() {
+  await AsyncStorage.removeItem(TOKEN_KEY);
+}
+
+async function authHeaders() {
+  const t = await getToken();
+  return t ? { Authorization: `Bearer ${t}` } : {};
+}
+
+export async function createBooking(body: BookingCreate): Promise<Booking> {
+  const res = await fetch(url('/bookings'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error((await res.text()) || 'Booking failed');
+  return res.json();
+}
+
+export async function subscribeNewsletter(email: string) {
+  const res = await fetch(url('/newsletter'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  });
+  if (!res.ok) throw new Error('Failed');
+  return res.json();
+}
+
+export async function adminLogin(email: string, password: string) {
+  const res = await fetch(url('/admin/login'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
+  });
+  if (!res.ok) throw new Error('Invalid credentials');
+  const data = await res.json();
+  await saveToken(data.access_token);
+  return data;
+}
+
+export async function adminMe() {
+  const res = await fetch(url('/admin/me'), { headers: await authHeaders() });
+  if (!res.ok) throw new Error('Unauthorized');
+  return res.json();
+}
+
+export async function adminListBookings(): Promise<Booking[]> {
+  const res = await fetch(url('/admin/bookings'), { headers: await authHeaders() });
+  if (!res.ok) throw new Error('Failed');
+  return res.json();
+}
+
+export async function adminUpdateBooking(id: string, status: string): Promise<Booking> {
+  const res = await fetch(url(`/admin/bookings/${id}`), {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...(await authHeaders()) },
+    body: JSON.stringify({ status }),
+  });
+  if (!res.ok) throw new Error('Failed');
+  return res.json();
+}
+"
+Observation: Create successful: /app/frontend/src/api.ts

@@ -1,0 +1,14 @@
+The luxury salon home screen renders beautifully — cinematic hero, elegant serif typography, gold CTA buttons, bottom tab bar, and floating WhatsApp FAB. Now let me create the required PRD and test credentials files, then run comprehensive testing:
+Action: file_editor create /app/memory/test_credentials.md --file-text "# Priyakamakeover & Salon — Test Credentials
+
+## Admin (Owner) Login
+- **URL**: In-app → tap the user icon (top-right of Home hero) → Admin Login screen at `/admin/login`
+- **Email**: `admin@priyakamakeover.com`
+- **Password**: `Priyaka@Salon2026`
+
+## Notes
+- Admin is auto-seeded on backend startup from `backend/.env` (`ADMIN_EMAIL`, `ADMIN_PASSWORD`).
+- Public booking form does NOT require auth.
+- JWT tokens are valid for 24 hours and stored in AsyncStorage under key `priyaka_admin_token`.
+"
+Observation: Failed to create file: File already exists at: /app/memory/test_credentials.md. Use overwrite=True to replace

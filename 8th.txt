@@ -1,0 +1,233 @@
+
+Action: file_editor create /app/backend/server.py --file-text "from fastapi import FastAPI, APIRouter, HTTPException, Depends, status
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from dotenv import load_dotenv
+from starlette.middleware.cors import CORSMiddleware
+from motor.motor_asyncio import AsyncIOMotorClient
+import os
+import logging
+import uuid
+from pathlib import Path
+from pydantic import BaseModel, Field, EmailStr
+from typing import List, Optional
+from datetime import datetime, timezone, timedelta
+from passlib.context import CryptContext
+import jwt
+
+ROOT_DIR = Path(__file__).parent
+load_dotenv(ROOT_DIR / '.env')
+
+# ---- Config ----
+MONGO_URL = os.environ['MONGO_URL']
+DB_NAME = os.environ['DB_NAME']
+JWT_SECRET = os.environ['JWT_SECRET']
+ADMIN_EMAIL = os.environ['ADMIN_EMAIL']
+ADMIN_PASSWORD = os.environ['ADMIN_PASSWORD']
+JWT_ALG = \"HS256\"
+JWT_EXP_HOURS = 24
+
+client = AsyncIOMotorClient(MONGO_URL)
+db = client[DB_NAME]
+
+pwd_ctx = CryptContext(schemes=[\"bcrypt\"], deprecated=\"auto\")
+bearer = HTTPBearer(auto_error=False)
+
+app = FastAPI(title=\"Priyakamakeover & Salon API\")
+api = APIRouter(prefix=\"/api\")
+
+
+# ---- Utils ----
+def hash_password(p: str) -> str:
+    return pwd_ctx.hash(p)
+
+
+def verify_password(p: str, h: str) -> bool:
+    try:
+        return pwd_ctx.verify(p, h)
+    except Exception:
+        return False
+
+
+def create_token(sub: str) -> str:
+    payload = {
+        \"sub\": sub,
+        \"exp\": datetime.now(timezone.utc) + timedelta(hours=JWT_EXP_HOURS),
+        \"iat\": datetime.now(timezone.utc),
+    }
+    return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALG)
+
+
+async def require_admin(creds: Optional[HTTPAuthorizationCredentials] = Depends(bearer)):
+    if not creds or not creds.credentials:
+        raise HTTPException(status_code=401, detail=\"Missing token\")
+    try:
+        payload = jwt.decode(creds.credentials, JWT_SECRET, algorithms=[JWT_ALG])
+        email = payload.get(\"sub\")
+    except jwt.PyJWTError:
+        raise HTTPException(status_code=401, detail=\"Invalid token\")
+    user = await db.admins.find_one({\"email\": email}, {\"_id\": 0, \"password\": 0})
+    if not user:
+        raise HTTPException(status_code=403, detail=\"Not authorized\")
+    return user
+
+
+# ---- Models ----
+class BookingCreate(BaseModel):
+    name: str
+    phone: str
+    email: Optional[str] = None
+    service: str
+    preferred_date: str  # YYYY-MM-DD
+    preferred_time: str  # e.g. \"10:30 AM\"
+    notes: Optional[str] = \"\"
+
+
+class Booking(BaseModel):
+    id: str
+    name: str
+    phone: str
+    email: Optional[str] = None
+    service: str
+    preferred_date: str
+    preferred_time: str
+    notes: Optional[str] = \"\"
+    status: str = \"pending\"  # pending | confirmed | completed | cancelled
+    created_at: str
+
+
+class BookingUpdate(BaseModel):
+    status: str
+
+
+class LoginBody(BaseModel):
+    email: EmailStr
+    password: str
+
+
+class NewsletterCreate(BaseModel):
+    email: EmailStr
+
+
+class ContactMessage(BaseModel):
+    name: str
+    email: Optional[EmailStr] = None
+    phone: Optional[str] = None
+    message: str
+
+
+# ---- Startup: seed admin ----
+@app.on_event(\"startup\")
+async def seed_admin():
+    existing = await db.admins.find_one({\"email\": ADMIN_EMAIL})
+    if not existing:
+        await db.admins.insert_one({
+            \"id\": str(uuid.uuid4()),
+            \"email\": ADMIN_EMAIL,
+            \"password\": hash_password(ADMIN_PASSWORD),
+            \"role\": \"admin\",
+            \"created_at\": datetime.now(timezone.utc).isoformat(),
+        })
+
+
+# ---- Routes ----
+@api.get(\"/\")
+async def root():
+    return {\"message\": \"Priyakamakeover & Salon API\", \"status\": \"ok\"}
+
+
+# Public booking
+@api.post(\"/bookings\", response_model=Booking)
+async def create_booking(body: BookingCreate):
+    doc = {
+        \"id\": str(uuid.uuid4()),
+        **body.model_dump(),
+        \"status\": \"pending\",
+        \"created_at\": datetime.now(timezone.utc).isoformat(),
+    }
+    await db.bookings.insert_one(doc)
+    doc.pop(\"_id\", None)
+    return doc
+
+
+# Admin login
+@api.post(\"/admin/login\")
+async def admin_login(body: LoginBody):
+    user = await db.admins.find_one({\"email\": body.email})
+    if not user or not verify_password(body.password, user[\"password\"]):
+        raise HTTPException(status_code=401, detail=\"Invalid credentials\")
+    token = create_token(user[\"email\"])
+    return {\"access_token\": token, \"token_type\": \"bearer\", \"email\": user[\"email\"]}
+
+
+@api.get(\"/admin/me\")
+async def admin_me(admin: dict = Depends(require_admin)):
+    return admin
+
+
+# Admin: list bookings
+@api.get(\"/admin/bookings\", response_model=List[Booking])
+async def list_bookings(admin: dict = Depends(require_admin)):
+    docs = await db.bookings.find({}, {\"_id\": 0}).sort(\"created_at\", -1).to_list(500)
+    return docs
+
+
+# Admin: update booking status
+@api.patch(\"/admin/bookings/{booking_id}\", response_model=Booking)
+async def update_booking(booking_id: str, body: BookingUpdate, admin: dict = Depends(require_admin)):
+    if body.status not in {\"pending\", \"confirmed\", \"completed\", \"cancelled\"}:
+        raise HTTPException(status_code=400, detail=\"Invalid status\")
+    res = await db.bookings.find_one_and_update(
+        {\"id\": booking_id},
+        {\"$set\": {\"status\": body.status}},
+        return_document=True,
+        projection={\"_id\": 0},
+    )
+    if not res:
+        raise HTTPException(status_code=404, detail=\"Booking not found\")
+    return res
+
+
+# Public: newsletter
+@api.post(\"/newsletter\")
+async def newsletter(body: NewsletterCreate):
+    existing = await db.newsletter.find_one({\"email\": body.email})
+    if existing:
+        return {\"ok\": True, \"message\": \"Already subscribed\"}
+    await db.newsletter.insert_one({
+        \"id\": str(uuid.uuid4()),
+        \"email\": body.email,
+        \"created_at\": datetime.now(timezone.utc).isoformat(),
+    })
+    return {\"ok\": True, \"message\": \"Subscribed\"}
+
+
+# Public: contact form (stored + admin can view)
+@api.post(\"/contact\")
+async def contact(body: ContactMessage):
+    await db.messages.insert_one({
+        \"id\": str(uuid.uuid4()),
+        **body.model_dump(),
+        \"created_at\": datetime.now(timezone.utc).isoformat(),
+    })
+    return {\"ok\": True, \"message\": \"We'll get back to you shortly\"}
+
+
+app.include_router(api)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_credentials=True,
+    allow_origins=[\"*\"],
+    allow_methods=[\"*\"],
+    allow_headers=[\"*\"],
+)
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
+@app.on_event(\"shutdown\")
+async def shutdown_db_client():
+    client.close()
+"
+Observation: Overwrite successful: /app/backend/server.py

@@ -1,0 +1,44 @@
+
+Action: file_editor create /app/memory/PRD.md --file-text "# PRD — Priyakamakeover & Salon (Mobile App)
+
+## Overview
+Premium luxury mobile app for a beauty salon & makeup studio in Pipiganj. Editorial, elegant aesthetic inspired by high-end beauty brands.
+
+## Brand
+- **Name**: Priyakamakeover & Salon
+- **Tagline**: Enhancing Your Beauty with Style & Elegance
+- **Palette**: Pearl White, Warm Beige, Soft Blush Pink, Champagne Gold, Charcoal Black
+- **Typography**: Serif (Georgia) headings + system sans body
+- **Contact**: +91 63914 40029 · Pipiganj, Main Market · @priyankamakeover4422
+
+## Screens (Expo Router)
+Bottom tabs: **Home / Services / Gallery / Book / Contact**
+Stack: About, Bridal Portfolio, Testimonials, Offers, Blog (index + `[id]`), FAQ, Admin Login, Admin Dashboard
+
+## Backend (FastAPI + Mongo)
+- `POST /api/bookings` — public booking submission
+- `POST /api/admin/login` — JWT login (24h token)
+- `GET /api/admin/me` — verify token
+- `GET /api/admin/bookings` — list all bookings (admin)
+- `PATCH /api/admin/bookings/{id}` — update status (pending/confirmed/completed/cancelled)
+- `POST /api/newsletter` — public email subscription
+- `POST /api/contact` — public contact message
+
+## Key Features
+- Cinematic hero home with featured services, why choose us, bridal signature, offers carousel, testimonials, blog preview
+- Services catalog with 6 category filter chips
+- Masonry gallery with lightbox viewer + 8 category filters
+- Full booking form with horizontal date picker, time grid, service picker
+- Contact screen with map imagery, CTAs (Call/WhatsApp/Instagram/Maps), newsletter
+- Full blog with detail screen, FAQ accordion, offers with gift vouchers & referral cards
+- Admin dashboard with status filters and one-tap status updates
+- Floating WhatsApp FAB on Home
+
+## Business Enhancements
+- Gift Vouchers section drives incremental revenue
+- Referral program (\"Refer & Earn ₹500\") boosts word-of-mouth acquisition
+- Loyalty program (\"book 5, get free facial\") drives retention
+- Newsletter signup builds a marketing list
+- WhatsApp CTA short-circuits missed bookings when the app booking fails
+"
+Observation: Create successful: /app/memory/PRD.md

@@ -1,0 +1,122 @@
+
+Action: file_editor create /app/frontend/app/(tabs)/contact.tsx --file-text "import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Pressable, Linking, TextInput } from 'react-native';
+import { Image } from 'expo-image';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Feather } from '@expo/vector-icons';
+import { colors, spacing, radius, shadow, fonts, CONTACT } from '@/src/theme';
+import { subscribeNewsletter } from '@/src/api';
+import { useToast } from '@/src/components/Toast';
+
+export default function Contact() {
+  const [email, setEmail] = useState('');
+  const [busy, setBusy] = useState(false);
+  const toast = useToast();
+
+  const sub = async () => {
+    if (!email.includes('@')) { toast.show('Enter a valid email', 'error'); return; }
+    setBusy(true);
+    try {
+      await subscribeNewsletter(email);
+      toast.show('Subscribed! Watch your inbox for beauty tips.');
+      setEmail('');
+    } catch { toast.show('Try again', 'error'); }
+    setBusy(false);
+  };
+
+  return (
+    <View style={{ flex: 1, backgroundColor: colors.surface }}>
+      <SafeAreaView edges={['top']} style={styles.header}>
+        <Text style={styles.eyebrow}>VISIT US</Text>
+        <Text style={styles.title}>Contact</Text>
+      </SafeAreaView>
+
+      <ScrollView contentContainerStyle={{ padding: spacing.xl, paddingBottom: 140 }} showsVerticalScrollIndicator={false}>
+        <Image
+          source=\"https://images.pexels.com/photos/27165073/pexels-photo-27165073.jpeg?auto=compress&w=1000\"
+          style={styles.mapImg}
+          contentFit=\"cover\"
+        />
+
+        <View style={styles.card}>
+          <Feather name=\"map-pin\" size={18} color={colors.brandStrong} />
+          <View style={{ flex: 1 }}>
+            <Text style={styles.cardLabel}>ADDRESS</Text>
+            <Text style={styles.cardValue}>{CONTACT.address}</Text>
+          </View>
+        </View>
+
+        <View style={styles.card}>
+          <Feather name=\"clock\" size={18} color={colors.brandStrong} />
+          <View style={{ flex: 1 }}>
+            <Text style={styles.cardLabel}>OPENING HOURS</Text>
+            <Text style={styles.cardValue}>{CONTACT.hours}</Text>
+          </View>
+        </View>
+
+        <View style={styles.ctaRow}>
+          <Pressable style={styles.ctaPrimary} onPress={() => Linking.openURL(`tel:${CONTACT.phoneRaw}`)} testID=\"contact-call\">
+            <Feather name=\"phone\" size={18} color={colors.brand} />
+            <Text style={styles.ctaPrimaryText}>Call</Text>
+          </Pressable>
+          <Pressable style={styles.ctaGold} onPress={() => Linking.openURL(`https://wa.me/${CONTACT.whatsapp}`)} testID=\"contact-wa\">
+            <Feather name=\"message-circle\" size={18} color={colors.charcoal} />
+            <Text style={styles.ctaGoldText}>WhatsApp</Text>
+          </Pressable>
+        </View>
+
+        <Pressable style={styles.iconRow} onPress={() => Linking.openURL(CONTACT.instagramUrl)} testID=\"contact-ig\">
+          <Feather name=\"instagram\" size={18} color={colors.charcoal} />
+          <Text style={styles.iconRowText}>@{CONTACT.instagram}</Text>
+          <Feather name=\"arrow-up-right\" size={16} color={colors.muted} />
+        </Pressable>
+        <Pressable style={styles.iconRow} onPress={() => Linking.openURL(`mailto:${CONTACT.email}`)} testID=\"contact-email\">
+          <Feather name=\"mail\" size={18} color={colors.charcoal} />
+          <Text style={styles.iconRowText}>{CONTACT.email}</Text>
+          <Feather name=\"arrow-up-right\" size={16} color={colors.muted} />
+        </Pressable>
+        <Pressable style={styles.iconRow} onPress={() => Linking.openURL(`https://maps.google.com/?q=${encodeURIComponent(CONTACT.address)}`)} testID=\"contact-map\">
+          <Feather name=\"navigation\" size={18} color={colors.charcoal} />
+          <Text style={styles.iconRowText}>Open in Google Maps</Text>
+          <Feather name=\"arrow-up-right\" size={16} color={colors.muted} />
+        </Pressable>
+
+        <View style={styles.newsletter}>
+          <Text style={styles.newsTitle}>Beauty Newsletter</Text>
+          <Text style={styles.newsSub}>Tips, offers and inspiration — straight to your inbox.</Text>
+          <View style={styles.newsRow}>
+            <TextInput placeholder=\"your@email.com\" placeholderTextColor={colors.muted} value={email} onChangeText={setEmail} autoCapitalize=\"none\" keyboardType=\"email-address\" style={styles.newsInput} testID=\"news-email\" />
+            <Pressable style={styles.newsBtn} onPress={sub} disabled={busy} testID=\"news-sub\">
+              <Feather name=\"arrow-right\" size={16} color={colors.charcoal} />
+            </Pressable>
+          </View>
+        </View>
+      </ScrollView>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  header: { paddingHorizontal: spacing.xl, paddingBottom: spacing.md, backgroundColor: colors.surface, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border },
+  eyebrow: { color: colors.brandStrong, letterSpacing: 2, fontSize: 10, fontFamily: fonts.sans, marginTop: spacing.md },
+  title: { fontFamily: fonts.serif, fontSize: 32, color: colors.charcoal, fontWeight: '500', marginTop: 4, marginBottom: spacing.md },
+  mapImg: { width: '100%', height: 180, borderRadius: radius.lg, marginBottom: spacing.lg },
+  card: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, backgroundColor: colors.beige, borderRadius: radius.md, padding: spacing.lg, marginBottom: spacing.md },
+  cardLabel: { fontFamily: fonts.sans, fontSize: 10, letterSpacing: 1.5, color: colors.muted },
+  cardValue: { fontFamily: fonts.serif, fontSize: 16, color: colors.charcoal, marginTop: 2, fontWeight: '500' },
+  ctaRow: { flexDirection: 'row', gap: spacing.md, marginVertical: spacing.md },
+  ctaPrimary: { flex: 1, flexDirection: 'row', gap: 8, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.charcoal, paddingVertical: 16, borderRadius: radius.pill },
+  ctaPrimaryText: { fontFamily: fonts.sans, color: colors.brand, fontWeight: '500' },
+  ctaGold: { flex: 1, flexDirection: 'row', gap: 8, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.brand, paddingVertical: 16, borderRadius: radius.pill },
+  ctaGoldText: { fontFamily: fonts.sans, color: colors.charcoal, fontWeight: '500' },
+  iconRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, paddingVertical: spacing.md, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.divider },
+  iconRowText: { flex: 1, fontFamily: fonts.sans, fontSize: 14, color: colors.charcoal },
+  newsletter: { backgroundColor: colors.blush, borderRadius: radius.lg, padding: spacing.xl, marginTop: spacing.xl },
+  newsTitle: { fontFamily: fonts.serif, fontSize: 22, color: colors.charcoal, fontWeight: '500' },
+  newsSub: { fontFamily: fonts.sans, fontSize: 12, color: colors.muted, marginTop: 4 },
+  newsRow: { flexDirection: 'row', gap: spacing.sm, marginTop: spacing.md, alignItems: 'center' },
+  newsInput: { flex: 1, backgroundColor: colors.pearl, borderRadius: radius.pill, paddingHorizontal: spacing.lg, paddingVertical: 12, fontFamily: fonts.sans, color: colors.charcoal, fontSize: 13 },
+  newsBtn: { width: 44, height: 44, borderRadius: radius.pill, backgroundColor: colors.brand, alignItems: 'center', justifyContent: 'center' },
+});
+"
+Observation: Create successful: /app/frontend/app/(tabs)/contact.tsx

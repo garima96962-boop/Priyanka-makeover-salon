@@ -1,0 +1,250 @@
+Build a mobile app: # MASTER AI WEBSITE PROMPT — PRIYAKAMAKEOVER & SALON
+
+Create a premium, world-class luxury website for **Priyakamakeover & Salon**, a high-end Beauty Salon & Makeup Studio. The website should rival the quality of leading international beauty brands and feel elegant, modern, luxurious, and trustworthy.
+
+## Brand Identity
+
+Business Name: Priyakamakeover & Salon
+
+Industry: Beauty Salon & Makeup Studio
+
+Tagline:
+**Enhancing Your Beauty with Style & Elegance**
+
+Target Audience:
+Women aged 18–45 seeking professional bridal makeup, engagement makeup, reception makeup, party makeup, hairstyling, hair treatments, skincare, waxing, threading, mehndi, and beauty services for weddings, parties, festivals, and special occasions.
+
+Primary Goals:
+
+* Increase online appointment bookings
+* Showcase premium salon services
+* Display an impressive portfolio of transformations
+* Build trust through authentic client testimonials
+* Encourage WhatsApp inquiries
+* Improve local SEO visibility
+* Create a memorable luxury brand experience
+
+## Design Direction
+
+The website should have a clean, editorial, luxury aesthetic inspired by premium beauty brands.
+
+Color Palette:
+
+* Pearl White
+* Warm Beige
+* Soft Blush Pink
+* Champagne Gold
+* Charcoal Black for text
+
+Typography:
+
+* Elegant serif headings
+* Modern sans-serif body text
+
+Visual Style:
+
+* Large cinematic hero banners
+* Full-width lifestyle photography
+* Rounded cards
+* Soft shadows
+* Smooth scroll animations
+* Glassmorphism accents where appropriate
+* Premium spacing and minimal clutter
+
+## Pages
+
+1. Home
+2. About
+3. Services
+4. Gallery
+5. Bridal Portfolio
+6. Testimonials
+7. Offers
+8. Blog
+9. Book Appointment
+10. Contact
+11. FAQ
+
+## Home Page Sections
+
+* Sticky transparent navigation
+* Luxury hero banner with CTA
+* Featured services
+* Why Choose Us
+* Signature Bridal Makeup
+* Before & After Transformations
+* Customer Testimonials
+* Instagram Feed
+* Limited-Time Offers
+* Beauty Tips Preview
+* Final Call-to-Action
+
+## About Page
+
+Include:
+
+* Our Story
+* Mission
+* Vision
+* Meet the Team
+* Hygiene Standards
+* Premium Products
+* Customer Commitment
+
+## Services
+
+Create elegant cards with icons, descriptions, and booking buttons for:
+
+Threading, Bleaching, Facials, Waxing, Rica Wax, Haircuts, Bridal Makeup, Party Makeup, Engagement Makeup, Reception Makeup, D-Tan, Hair Spa, Hair Smoothing, Permanent Straightening, Hair Colour, Mehndi, Manicure & Pedicure.
+
+Group services into clear categories and make them easy to browse.
+
+## Gallery
+
+Display:
+
+* Bridal Looks
+* Party Makeup
+* Hair Transformations
+* Before & After
+* Skin Treatments
+* Hair Colour
+* Mehndi Designs
+* Salon Interior
+* Video Reels
+
+Use a masonry layout with lightbox viewing and category filters.
+
+## Testimonials
+
+Include:
+
+* Client photos
+* 5-star ratings
+* Review cards
+* Video testimonials
+* Google review highlights
+
+## Appointment Page
+
+Provide a modern booking form with:
+
+* Name
+* Phone
+* Email
+* Service
+* Preferred Date
+* Preferred Time
+* Notes
+
+Also include:
+
+* Floating WhatsApp booking
+* Call Now button
+
+## Contact
+
+Include:
+
+* Address
+* Google Maps
+* Phone
+* WhatsApp
+* Email
+* Opening Hours
+* Instagram
+* Facebook
+
+## Blog
+
+Create a beauty blog featuring:
+
+* Bridal Makeup Tips
+* Hair Care
+* Skin Care
+* Seasonal Beauty Advice
+* Festival Makeup Trends
+* Wedding Preparation Guides
+
+## FAQ
+
+Answer common questions about:
+
+* Bookings
+* Bridal Packages
+* Cancellation Policy
+* Payment Options
+* Products Used
+* Home Service Availability
+
+## User Experience
+
+The website must:
+
+* Load quickly
+* Be mobile-first
+* Be fully responsive
+* Follow accessibility best practices
+* Include smooth page transitions
+* Use elegant hover effects
+* Have clear call-to-action buttons on every page
+
+## SEO
+
+Optimize for local search with keywords such as:
+
+* Bridal Makeup Artist
+* Beauty Salon
+* Hair Salon
+* Makeup Studio
+* Bridal Makeup Near Me
+* Hair Spa
+* Facial
+* Hair Colour
+* Party Makeup
+* Mehndi Artist
+
+Generate:
+
+* SEO-friendly URLs
+* Meta titles
+* Meta descriptions
+* Open Graph tags
+* Structured schema markup
+
+## Conversion Features
+
+Include:
+
+* Sticky "Book Appointment" button
+* Floating WhatsApp chat
+* Gift Voucher section
+* Instagram feed
+* Newsletter signup
+* Google Reviews
+* Offer banners
+* Referral program section
+* Loyalty program section
+
+## Overall Experience
+
+The final website should feel luxurious, premium, modern, trustworthy, and emotionally engaging. Every section should naturally guide visitors toward exploring services, viewing transformations, building confidence in the salon, and booking an appointment.
+
+Action: Great! I'll build a premium mobile app for **Priyakamakeover & Salon**. A few quick clarifications before I start:
+
+1. **Platform confirmation**: The brief mentions "website", but this platform builds **React Native / Expo mobile apps**. Shall I proceed with a luxury mobile app version covering all the same pages/features?
+   - Yes, build the mobile app
+   - No, I need a website (I'll need to redirect you)
+
+2. **Appointment booking backend**: How should bookings be handled?
+   - Store in database + show in an admin/owner view in the app
+   - Store in database + send booking to salon via WhatsApp deeplink
+   - Just WhatsApp deeplink (no database)
+
+3. **Blog content**: 
+   - I'll seed sample beauty blog posts (bridal tips, hair care, etc.)
+   - You'll add posts later via admin (needs auth)
+
+4. **Gallery/Portfolio images**: 
+   - Use high-quality stock beauty/salon images from Unsplash/Pexels
+   - You'll provide your own images latersss

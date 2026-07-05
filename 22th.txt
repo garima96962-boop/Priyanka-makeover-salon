@@ -1,0 +1,188 @@
+
+Action: file_editor create /app/frontend/app/(tabs)/book.tsx --file-text "import React, { useEffect, useMemo, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Pressable, TextInput, KeyboardAvoidingView, Platform, Linking, ActivityIndicator } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Feather } from '@expo/vector-icons';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { colors, spacing, radius, shadow, fonts, CONTACT } from '@/src/theme';
+import { SERVICES } from '@/src/data';
+import { createBooking } from '@/src/api';
+import { useToast } from '@/src/components/Toast';
+
+function nextDays(n: number) {
+  const arr: { d: Date; label: string; sub: string; iso: string }[] = [];
+  const today = new Date();
+  const wd = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const mn = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  for (let i = 0; i < n; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
+    const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    arr.push({ d, label: String(d.getDate()), sub: `${wd[d.getDay()]} · ${mn[d.getMonth()]}`, iso });
+  }
+  return arr;
+}
+
+const TIMES = ['09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM', '05:00 PM', '06:00 PM', '07:00 PM', '08:00 PM'];
+
+export default function Book() {
+  const params = useLocalSearchParams<{ service?: string }>();
+  const router = useRouter();
+  const toast = useToast();
+  const dates = useMemo(() => nextDays(21), []);
+
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [service, setService] = useState<string>(params.service || SERVICES[0].name);
+  const [date, setDate] = useState<string>(dates[1].iso);
+  const [time, setTime] = useState<string>(TIMES[2]);
+  const [notes, setNotes] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [showServicePicker, setShowServicePicker] = useState(false);
+
+  useEffect(() => { if (params.service) setService(params.service); }, [params.service]);
+
+  const submit = async () => {
+    if (!name.trim() || !phone.trim()) { toast.show('Please enter your name and phone', 'error'); return; }
+    if (phone.trim().length < 8) { toast.show('Enter a valid phone number', 'error'); return; }
+    try {
+      setSubmitting(true);
+      await createBooking({ name: name.trim(), phone: phone.trim(), email: email.trim() || undefined, service, preferred_date: date, preferred_time: time, notes });
+      toast.show('Booking sent — we\'ll confirm shortly');
+      setName(''); setPhone(''); setEmail(''); setNotes('');
+      setTimeout(() => router.push('/(tabs)'), 800);
+    } catch (e: any) {
+      toast.show('Could not send booking. Try WhatsApp.', 'error');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const whatsapp = () => {
+    const msg = `Hi Priyakamakeover, I'd like to book *${service}* on ${date} at ${time}.\nName: ${name || '-'}\nPhone: ${phone || '-'}`;
+    Linking.openURL(`https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent(msg)}`);
+  };
+
+  return (
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1, backgroundColor: colors.surface }}>
+      <SafeAreaView edges={['top']} style={styles.header}>
+        <Text style={styles.eyebrow}>APPOINTMENT</Text>
+        <Text style={styles.title}>Book Your Visit</Text>
+      </SafeAreaView>
+
+      <ScrollView contentContainerStyle={{ padding: spacing.xl, paddingBottom: 200 }} keyboardShouldPersistTaps=\"handled\" showsVerticalScrollIndicator={false}>
+        <Label>Full Name</Label>
+        <TextInput value={name} onChangeText={setName} placeholder=\"Your name\" placeholderTextColor={colors.muted} style={styles.input} testID=\"input-name\" />
+
+        <Label>Phone</Label>
+        <TextInput value={phone} onChangeText={setPhone} placeholder=\"+91 …\" placeholderTextColor={colors.muted} keyboardType=\"phone-pad\" style={styles.input} testID=\"input-phone\" />
+
+        <Label>Email (optional)</Label>
+        <TextInput value={email} onChangeText={setEmail} placeholder=\"you@example.com\" placeholderTextColor={colors.muted} keyboardType=\"email-address\" autoCapitalize=\"none\" style={styles.input} testID=\"input-email\" />
+
+        <Label>Service</Label>
+        <Pressable style={styles.select} onPress={() => setShowServicePicker((v) => !v)} testID=\"select-service\">
+          <Text style={styles.selectText} numberOfLines={1}>{service}</Text>
+          <Feather name={showServicePicker ? 'chevron-up' : 'chevron-down'} size={18} color={colors.charcoal} />
+        </Pressable>
+        {showServicePicker && (
+          <View style={styles.picker}>
+            <ScrollView style={{ maxHeight: 260 }} nestedScrollEnabled>
+              {SERVICES.map((s) => (
+                <Pressable key={s.id} style={styles.pickerItem} onPress={() => { setService(s.name); setShowServicePicker(false); }} testID={`pick-${s.id}`}>
+                  <Text style={styles.pickerItemText}>{s.name}</Text>
+                  <Text style={styles.pickerItemMeta}>{s.price}</Text>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+        )}
+
+        <Label>Preferred Date</Label>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.dateRow}>
+          {dates.map((d) => {
+            const active = d.iso === date;
+            return (
+              <Pressable key={d.iso} style={[styles.dateChip, active && styles.dateChipActive]} onPress={() => setDate(d.iso)} testID={`date-${d.iso}`}>
+                <Text style={[styles.dateNum, active && { color: colors.pearl }]}>{d.label}</Text>
+                <Text style={[styles.dateSub, active && { color: 'rgba(252,251,249,0.7)' }]}>{d.sub}</Text>
+              </Pressable>
+            );
+          })}
+        </ScrollView>
+
+        <Label>Preferred Time</Label>
+        <View style={styles.timeGrid}>
+          {TIMES.map((t) => {
+            const active = t === time;
+            return (
+              <Pressable key={t} style={[styles.timeChip, active && styles.timeChipActive]} onPress={() => setTime(t)} testID={`time-${t}`}>
+                <Text style={[styles.timeText, active && { color: colors.pearl }]}>{t}</Text>
+              </Pressable>
+            );
+          })}
+        </View>
+
+        <Label>Notes (optional)</Label>
+        <TextInput value={notes} onChangeText={setNotes} placeholder=\"Any preferences or details…\" placeholderTextColor={colors.muted} multiline style={[styles.input, { height: 92, textAlignVertical: 'top' }]} testID=\"input-notes\" />
+
+        <View style={{ height: spacing.lg }} />
+
+        <Pressable style={[styles.submit, submitting && { opacity: 0.6 }]} onPress={submit} disabled={submitting} testID=\"submit-booking\">
+          {submitting ? <ActivityIndicator color={colors.charcoal} /> : (
+            <>
+              <Text style={styles.submitText}>Confirm Booking</Text>
+              <Feather name=\"arrow-right\" size={16} color={colors.charcoal} />
+            </>
+          )}
+        </Pressable>
+
+        <View style={styles.altRow}>
+          <Pressable style={styles.altBtn} onPress={whatsapp} testID=\"wa-book\">
+            <Feather name=\"message-circle\" size={16} color={colors.charcoal} />
+            <Text style={styles.altText}>WhatsApp</Text>
+          </Pressable>
+          <Pressable style={styles.altBtn} onPress={() => Linking.openURL(`tel:${CONTACT.phoneRaw}`)} testID=\"call-book\">
+            <Feather name=\"phone\" size={16} color={colors.charcoal} />
+            <Text style={styles.altText}>Call Now</Text>
+          </Pressable>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
+  );
+}
+
+function Label({ children }: { children: string }) {
+  return <Text style={styles.label}>{children}</Text>;
+}
+
+const styles = StyleSheet.create({
+  header: { paddingHorizontal: spacing.xl, paddingBottom: spacing.md, backgroundColor: colors.surface, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border },
+  eyebrow: { color: colors.brandStrong, letterSpacing: 2, fontSize: 10, fontFamily: fonts.sans, marginTop: spacing.md },
+  title: { fontFamily: fonts.serif, fontSize: 32, color: colors.charcoal, fontWeight: '500', marginTop: 4, marginBottom: spacing.md },
+  label: { fontFamily: fonts.sans, fontSize: 11, letterSpacing: 1.5, color: colors.muted, marginTop: spacing.lg, marginBottom: spacing.sm },
+  input: { backgroundColor: colors.beige, borderRadius: radius.md, paddingHorizontal: spacing.lg, paddingVertical: 14, fontFamily: fonts.sans, color: colors.charcoal, fontSize: 14 },
+  select: { backgroundColor: colors.beige, borderRadius: radius.md, paddingHorizontal: spacing.lg, paddingVertical: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  selectText: { flex: 1, fontFamily: fonts.sans, color: colors.charcoal, fontSize: 14 },
+  picker: { backgroundColor: colors.pearl, borderRadius: radius.md, marginTop: 6, borderWidth: 1, borderColor: colors.border, overflow: 'hidden' },
+  pickerItem: { paddingHorizontal: spacing.lg, paddingVertical: 12, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.divider, flexDirection: 'row', justifyContent: 'space-between' },
+  pickerItemText: { fontFamily: fonts.sans, color: colors.charcoal, fontSize: 13, flex: 1 },
+  pickerItemMeta: { fontFamily: fonts.sans, color: colors.muted, fontSize: 12 },
+  dateRow: { gap: 8, paddingVertical: 4 },
+  dateChip: { minWidth: 66, height: 76, borderRadius: radius.md, borderWidth: 1, borderColor: colors.borderStrong, backgroundColor: colors.pearl, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 10 },
+  dateChipActive: { backgroundColor: colors.charcoal, borderColor: colors.charcoal },
+  dateNum: { fontFamily: fonts.serif, fontSize: 20, color: colors.charcoal, fontWeight: '500' },
+  dateSub: { fontFamily: fonts.sans, fontSize: 10, color: colors.muted, marginTop: 2 },
+  timeGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  timeChip: { paddingHorizontal: 14, paddingVertical: 10, borderRadius: radius.pill, borderWidth: 1, borderColor: colors.borderStrong, backgroundColor: colors.pearl },
+  timeChipActive: { backgroundColor: colors.charcoal, borderColor: colors.charcoal },
+  timeText: { fontFamily: fonts.sans, fontSize: 12, color: colors.charcoal },
+  submit: { flexDirection: 'row', gap: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.brand, borderRadius: radius.pill, paddingVertical: 16, ...shadow.card },
+  submitText: { fontFamily: fonts.sans, color: colors.charcoal, fontSize: 15, fontWeight: '500' },
+  altRow: { flexDirection: 'row', gap: spacing.md, marginTop: spacing.md },
+  altBtn: { flex: 1, flexDirection: 'row', gap: 6, alignItems: 'center', justifyContent: 'center', paddingVertical: 14, borderRadius: radius.pill, borderWidth: 1, borderColor: colors.borderStrong },
+  altText: { fontFamily: fonts.sans, color: colors.charcoal, fontSize: 13, fontWeight: '500' },
+});
+"
+Observation: Create successful: /app/frontend/app/(tabs)/book.tsx

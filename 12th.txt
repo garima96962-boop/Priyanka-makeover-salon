@@ -1,0 +1,48 @@
+
+Action: file_editor create /app/frontend/src/components/Toast.tsx --file-text "import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { Animated, StyleSheet, Text, View } from 'react-native';
+import { colors, radius, shadow, spacing, fonts } from '@/src/theme';
+
+type Toast = { id: number; message: string; type?: 'success' | 'error' | 'info' };
+const Ctx = createContext<{ show: (m: string, t?: Toast['type']) => void }>({ show: () => {} });
+
+export const useToast = () => useContext(Ctx);
+
+export function ToastHost({ children }: { children: React.ReactNode }) {
+  const [toast, setToast] = useState<Toast | null>(null);
+  const opacity = useRef(new Animated.Value(0)).current;
+
+  const show = useCallback((message: string, type: Toast['type'] = 'success') => {
+    setToast({ id: Date.now(), message, type });
+  }, []);
+
+  useEffect(() => {
+    if (!toast) return;
+    Animated.timing(opacity, { toValue: 1, duration: 220, useNativeDriver: true }).start();
+    const t = setTimeout(() => {
+      Animated.timing(opacity, { toValue: 0, duration: 220, useNativeDriver: true }).start(() => setToast(null));
+    }, 2400);
+    return () => clearTimeout(t);
+  }, [toast, opacity]);
+
+  return (
+    <Ctx.Provider value={{ show }}>
+      {children}
+      {toast && (
+        <Animated.View pointerEvents=\"none\" style={[styles.wrap, { opacity }]} testID=\"toast\">
+          <View style={[styles.toast, toast.type === 'error' && { backgroundColor: colors.error }]}>
+            <Text style={styles.text}>{toast.message}</Text>
+          </View>
+        </Animated.View>
+      )}
+    </Ctx.Provider>
+  );
+}
+
+const styles = StyleSheet.create({
+  wrap: { position: 'absolute', top: 60, left: 0, right: 0, alignItems: 'center', zIndex: 9999 },
+  toast: { backgroundColor: colors.charcoal, paddingVertical: spacing.md, paddingHorizontal: spacing.xl, borderRadius: radius.pill, ...shadow.card },
+  text: { color: colors.pearl, fontFamily: fonts.sans, fontSize: 14 },
+});
+"
+Observation: Create successful: /app/frontend/src/components/Toast.tsx

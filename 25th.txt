@@ -1,0 +1,70 @@
+
+Action: file_editor create /app/frontend/app/bridal.tsx --file-text "import React from 'react';
+import { View, Text, StyleSheet, ScrollView, Pressable, Dimensions } from 'react-native';
+import { Image } from 'expo-image';
+import { LinearGradient } from 'expo-linear-gradient';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Feather } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import { colors, spacing, radius, fonts } from '@/src/theme';
+import { GALLERY } from '@/src/data';
+
+const { width: W } = Dimensions.get('window');
+const HERO = 'https://images.unsplash.com/photo-1684868265715-03e19a3e0e00?w=1200&auto=format&fit=crop';
+
+export default function Bridal() {
+  const router = useRouter();
+  const bridal = GALLERY.filter((g) => g.category === 'Bridal');
+
+  return (
+    <View style={{ flex: 1, backgroundColor: colors.surface }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 60 }} showsVerticalScrollIndicator={false}>
+        <View style={styles.hero}>
+          <Image source={HERO} style={StyleSheet.absoluteFillObject} contentFit=\"cover\" />
+          <LinearGradient colors={['rgba(31,31,31,0.15)', 'rgba(31,31,31,0.85)']} style={StyleSheet.absoluteFillObject} />
+          <SafeAreaView edges={['top']} style={styles.heroInner}>
+            <Pressable onPress={() => router.back()} style={styles.back}><Feather name=\"arrow-left\" size={20} color={colors.pearl} /></Pressable>
+            <View style={{ flex: 1 }} />
+            <Text style={styles.eyebrow}>SIGNATURE</Text>
+            <Text style={styles.title}>Bridal{\"\n\"}Portfolio</Text>
+            <Text style={styles.sub}>Editorial. Timeless. Unforgettable.</Text>
+          </SafeAreaView>
+        </View>
+
+        <Text style={styles.para}>
+          Every bride at Priyakamakeover is a muse. Our HD bridal makeup is designed for close-up cameras and long celebrations — a flawless base, custom-blended contour, hand-applied lashes and a hair style that holds through every ceremony.
+        </Text>
+
+        <View style={styles.grid}>
+          {bridal.concat(bridal).map((g, i) => (
+            <Pressable key={`${g.id}-${i}`} style={styles.tile}>
+              <Image source={g.url} style={styles.tileImg} contentFit=\"cover\" />
+            </Pressable>
+          ))}
+        </View>
+
+        <Pressable style={styles.cta} onPress={() => router.push('/(tabs)/book')} testID=\"bridal-book\">
+          <Text style={styles.ctaText}>Book Your Bridal Consultation</Text>
+          <Feather name=\"arrow-right\" size={16} color={colors.charcoal} />
+        </Pressable>
+      </ScrollView>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  hero: { height: 420, overflow: 'hidden' },
+  heroInner: { flex: 1, paddingHorizontal: spacing.xl, paddingBottom: spacing.xl },
+  back: { width: 40, height: 40, borderRadius: radius.pill, backgroundColor: 'rgba(252,251,249,0.15)', borderWidth: 1, borderColor: 'rgba(252,251,249,0.4)', alignItems: 'center', justifyContent: 'center', marginTop: spacing.sm },
+  eyebrow: { color: colors.brand, letterSpacing: 3, fontSize: 11, fontFamily: fonts.sans },
+  title: { fontFamily: fonts.serif, color: colors.pearl, fontSize: 40, fontWeight: '500', marginTop: 6, lineHeight: 44 },
+  sub: { fontFamily: fonts.sans, color: 'rgba(252,251,249,0.85)', marginTop: 6, fontSize: 13 },
+  para: { fontFamily: fonts.sans, color: colors.charcoal, fontSize: 14, lineHeight: 22, opacity: 0.85, padding: spacing.xl },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: spacing.xl, gap: spacing.sm },
+  tile: { width: (W - spacing.xl * 2 - spacing.sm) / 2, height: 220, borderRadius: radius.md, overflow: 'hidden' },
+  tileImg: { width: '100%', height: '100%' },
+  cta: { flexDirection: 'row', gap: 6, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.brand, marginHorizontal: spacing.xl, marginTop: spacing.xl, paddingVertical: 16, borderRadius: radius.pill },
+  ctaText: { fontFamily: fonts.sans, color: colors.charcoal, fontSize: 15, fontWeight: '500' },
+});
+"
+Observation: Create successful: /app/frontend/app/bridal.tsx

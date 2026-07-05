@@ -1,0 +1,39 @@
+Now let me create the app layout with tabs and screens. I'll create the main files in parallel:
+Action: file_editor create /app/frontend/app/_layout.tsx --file-text "import { Stack } from \"expo-router\";
+import * as SplashScreen from \"expo-splash-screen\";
+import { useEffect } from \"react\";
+import { LogBox, StatusBar, View } from \"react-native\";
+import { GestureHandlerRootView } from \"react-native-gesture-handler\";
+import { SafeAreaProvider } from \"react-native-safe-area-context\";
+
+import { useIconFonts } from \"@/src/hooks/use-icon-fonts\";
+import { ToastHost } from \"@/src/components/Toast\";
+import { colors } from \"@/src/theme\";
+
+LogBox.ignoreAllLogs(true);
+SplashScreen.preventAutoHideAsync();
+
+export default function RootLayout() {
+  const [loaded, error] = useIconFonts();
+
+  useEffect(() => {
+    if (loaded || error) SplashScreen.hideAsync();
+  }, [loaded, error]);
+
+  if (!loaded && !error) return null;
+
+  return (
+    <GestureHandlerRootView style={{ flex: 1, backgroundColor: colors.surface }}>
+      <SafeAreaProvider>
+        <StatusBar barStyle=\"dark-content\" backgroundColor={colors.surface} />
+        <ToastHost>
+          <View style={{ flex: 1, backgroundColor: colors.surface }}>
+            <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.surface } }} />
+          </View>
+        </ToastHost>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}
+"
+Observation: Overwrite successful: /app/frontend/app/_layout.tsx
